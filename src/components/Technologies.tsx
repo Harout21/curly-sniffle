@@ -3,68 +3,94 @@ import { motion } from "motion/react";
 const materials = [
   {
     name: "Premium Oak",
-    image: "https://images.unsplash.com/photo-1758548157195-67d141468467?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcmVtaXVtJTIwd29vZCUyMG1hdGVyaWFsJTIwdGV4dHVyZXxlbnwxfHx8fDE3NzE4NjE2OTd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    description: "Sourced from sustainable forests",
+    alt: "Sustainable premium oak wood texture for custom door manufacturing",
+    image: "https://images.unsplash.com/photo-1758548157195-67d141468467?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    description: "Sourced from sustainable forests for long-lasting structural integrity.",
   },
   {
     name: "Walnut Wood",
-    image: "https://images.unsplash.com/photo-1737534884876-426964ba462a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b29kZW4lMjBmdXJuaXR1cmUlMjBjcmFmdHNtYW5zaGlwJTIwZGV0YWlsfGVufDF8fHx8MTc3MTg2MTY5OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    description: "Rich tones and exceptional durability",
+    alt: "Rich dark walnut wood finish for luxury custom furniture",
+    image: "https://images.unsplash.com/photo-1737534884876-426964ba462a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    description: "Rich tones and exceptional durability for high-end interior design.",
   },
   {
     name: "CNC Technology",
-    image: "https://images.unsplash.com/photo-1590880795696-20c7dfadacde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b29kd29ya2luZyUyMHRvb2xzJTIwd29ya3Nob3B8ZW58MXx8fHwxNzcxODYxNzAwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    description: "Precision cutting and design accuracy",
+    alt: "Precision CNC machinery cutting wood for custom furniture designs",
+    image: "https://images.unsplash.com/photo-1590880795696-20c7dfadacde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    description: "High-precision cutting and design accuracy for complex architectural patterns.",
   },
   {
     name: "Glass & Metal",
-    image: "https://images.unsplash.com/photo-1759803545394-041ea7b71989?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBnbGFzcyUyMGRvb3IlMjBlbnRyYW5jZXxlbnwxfHx8fDE3NzE4MDMyMzN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    description: "Contemporary accents and finishes",
+    alt: "Modern glass and metal door accents for contemporary home entrances",
+    image: "https://images.unsplash.com/photo-1759803545394-041ea7b71989?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    description: "Contemporary accents and finishes that define modern aesthetic standards.",
   },
 ];
 
 export function Technologies() {
   return (
-    <section id="technologies" className="py-24 px-6">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <p className="text-accent uppercase tracking-widest text-sm mb-2">Technologies & Materials</p>
-          <h2 className="text-4xl md:text-5xl tracking-tight">The Finest Materials,<br />The Latest Technology</h2>
-        </motion.div>
+      <section id="technologies" className="py-24 px-6 bg-white" aria-labelledby="tech-title">
+        <div className="max-w-7xl mx-auto">
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {materials.map((material, index) => (
-            <motion.div
-              key={index}
+          <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="group relative overflow-hidden rounded-sm"
-            >
-              <div className="aspect-[3/4] relative overflow-hidden">
-                <img
-                  src={material.image}
-                  alt={material.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-              </div>
-              
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                <h3 className="text-xl mb-1">{material.name}</h3>
-                <p className="text-white/80 text-sm">{material.description}</p>
-              </div>
-            </motion.div>
-          ))}
+              className="text-center mb-16"
+          >
+         <span className="text-[#e54201] uppercase tracking-[0.2em] text-xs font-bold px-3 py-1 mb-3 bg-[#e54201]/10 rounded-full">
+            Our Workflow
+          </span>
+
+            <h2 id="products-heading" className="text-4xl md:text-5xl font-bold tracking-tight mt-4 text-[#302c2b]">
+              Architectural Product Collection
+            </h2>
+          </motion.div>
+
+          {/* Using a list for better SEO structure */}
+          <ul className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 list-none p-0">
+            {materials.map((material, index) => (
+                <motion.li
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="group relative overflow-hidden rounded-lg shadow-sm"
+                >
+                  <figure className="aspect-[3/4] relative overflow-hidden m-0">
+                    <img
+                        src={material.image}
+                        alt={material.alt} // High-value SEO keywords here
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                    />
+
+                    {/* Darker gradient for text accessibility */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1a1817] via-[#302c2b]/30 to-transparent" />
+
+                    <figcaption className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <h3 className="text-xl font-bold mb-2 text-[#ffffff]">
+                        {material.name}
+                      </h3>
+                      <p className="text-gray-200 text-sm leading-relaxed">
+                        {material.description}
+                      </p>
+                    </figcaption>
+                  </figure>
+                </motion.li>
+            ))}
+          </ul>
+
+          {/* Hidden SEO text for crawlers */}
+          <div className="sr-only">
+            Best Project specializes in custom door manufacturing using sustainable
+            oak, luxury walnut, and advanced CNC woodworking technology. Our
+            artisanal approach combines modern glass and metal accents for
+            high-end residential and commercial interiors.
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
   );
 }

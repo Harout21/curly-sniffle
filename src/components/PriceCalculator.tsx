@@ -1,5 +1,5 @@
-import {useState} from 'react';
-import {Calculator, Check} from 'lucide-react';
+import { useState } from 'react';
+import { Calculator, Check } from 'lucide-react';
 
 type Material = 'mdf' | 'solid-wood' | 'premium';
 
@@ -10,9 +10,9 @@ interface Addon {
 }
 
 const addons: Addon[] = [
-    {id: 'led', label: 'LED Lighting', price: 250},
-    {id: 'soft-close', label: 'Soft Close Hinges', price: 180},
-    {id: 'custom-color', label: 'Custom Color Finish', price: 320},
+    { id: 'led', label: 'LED Lighting', price: 250 },
+    { id: 'soft-close', label: 'Soft Close Hinges', price: 180 },
+    { id: 'custom-color', label: 'Custom Color Finish', price: 320 },
 ];
 
 const materialPrices: Record<Material, number> = {
@@ -52,31 +52,37 @@ export function PriceCalculator() {
     const totalPrice = Math.round(materialCost + addonsCost);
 
     return (
-        <section id="calculator" className="py-24 bg-white">
+        <section id="calculator" className="py-24 bg-white" aria-labelledby="calc-heading">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
                 <div className="text-center mb-12">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#F5F0E8] mb-4">
-                        <Calculator className="text-[#A67C52]" size={28}/>
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#f5f5f5] mb-4">
+                        <Calculator className="text-[#e54201]" size={28} aria-hidden="true" />
                     </div>
-                    <h2 className="text-4xl md:text-5xl text-[#1A1A1A] mb-4">
-                        Price Calculator
+
+                    <h2 id="calc-heading" className="text-4xl md:text-5xl text-[#302c2b] mb-4 font-semibold">
+                        Custom Furniture Price Calculator
                     </h2>
+
                     <p className="text-lg text-gray-600">
-                        Get an instant estimate for your custom furniture project.
+                        Get an instant cost estimate for your premium custom furniture project.
                     </p>
                 </div>
 
-                <div className="bg-[#F5F0E8] rounded-lg p-8">
+                <div className="bg-[#f5f5f5] rounded-lg p-8">
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                        {/* Material Selection */}
+
                         <div>
-                            <label className="block text-[#1A1A1A] mb-3">
-                                Select Material
+                            <label htmlFor="material-select" className="block text-[#302c2b] mb-3 font-medium">
+                                Select Material Type
                             </label>
+
                             <select
+                                id="material-select"
                                 value={material}
                                 onChange={(e) => setMaterial(e.target.value as Material)}
-                                className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#A67C52] text-[#1A1A1A]"
+                                className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
                             >
                                 {Object.entries(materialLabels).map(([value, label]) => (
                                     <option key={value} value={value}>
@@ -86,104 +92,128 @@ export function PriceCalculator() {
                             </select>
                         </div>
 
-                        {/* Width Input */}
                         <div>
-                            <label className="block text-[#1A1A1A] mb-3">
-                                Width (cm)
+                            <label htmlFor="width-input" className="block text-[#302c2b] mb-3 font-medium">
+                                Project Width (cm)
                             </label>
+
                             <input
+                                id="width-input"
                                 type="number"
                                 value={width}
                                 onChange={(e) => setWidth(Number(e.target.value))}
                                 min="50"
                                 max="500"
-                                className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#A67C52] text-[#1A1A1A]"
+                                className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
                             />
                         </div>
 
-                        {/* Height Input */}
                         <div>
-                            <label className="block text-[#1A1A1A] mb-3">
-                                Height (cm)
+                            <label htmlFor="height-input" className="block text-[#302c2b] mb-3 font-medium">
+                                Project Height (cm)
                             </label>
+
                             <input
+                                id="height-input"
                                 type="number"
                                 value={height}
                                 onChange={(e) => setHeight(Number(e.target.value))}
                                 min="50"
                                 max="300"
-                                className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#A67C52] text-[#1A1A1A]"
+                                className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
                             />
                         </div>
                     </div>
 
-                    {/* Addons */}
-                    <div className="mb-8">
-                        <label className="block text-[#1A1A1A] mb-4">
-                            Additional Features
-                        </label>
+                    <fieldset className="mb-8">
+                        <legend className="block text-[#302c2b] mb-4 font-medium">
+                            Additional Custom Features
+                        </legend>
+
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
                             {addons.map((addon) => (
                                 <button
                                     key={addon.id}
+                                    type="button"
                                     onClick={() => toggleAddon(addon.id)}
+                                    aria-pressed={selectedAddons.includes(addon.id)}
                                     className={`p-4 rounded border-2 transition-all text-left ${
                                         selectedAddons.includes(addon.id)
-                                            ? 'border-[#A67C52] bg-white'
-                                            : 'border-gray-300 bg-white hover:border-[#A67C52]'
+                                            ? 'border-[#e54201] bg-white'
+                                            : 'border-gray-300 bg-white hover:border-[#e54201]'
                                     }`}
                                 >
+
                                     <div className="flex items-start justify-between mb-2">
-                                        <span className="text-[#1A1A1A]">{addon.label}</span>
+                                        <span className="text-[#302c2b] font-medium">
+                                            {addon.label}
+                                        </span>
+
                                         {selectedAddons.includes(addon.id) && (
-                                            <Check className="text-[#A67C52]" size={20}/>
+                                            <Check className="text-[#e54201]" size={20} aria-hidden="true" />
                                         )}
                                     </div>
+
                                     <span className="text-gray-600 text-sm">
-                    +${addon.price}
-                  </span>
+                                        +${addon.price}
+                                    </span>
+
                                 </button>
                             ))}
-                        </div>
-                    </div>
 
-                    {/* Price Breakdown */}
-                    <div className="bg-white rounded-lg p-6 mb-6">
-                        <h3 className="text-xl text-[#1A1A1A] mb-4">
-                            Price Breakdown
+                        </div>
+                    </fieldset>
+
+                    <article className="bg-white rounded-lg p-6 mb-6" aria-label="Quote Summary">
+
+                        <h3 className="text-xl text-[#302c2b] mb-4 font-semibold">
+                            Project Price Breakdown
                         </h3>
+
                         <div className="space-y-2 mb-4">
+
                             <div className="flex justify-between text-gray-600">
-                                <span>Material ({area.toFixed(2)} m²)</span>
+                                <span>Material Cost ({area.toFixed(2)} m²)</span>
                                 <span>${Math.round(materialCost)}</span>
                             </div>
+
                             {selectedAddons.map((addonId) => {
                                 const addon = addons.find((a) => a.id === addonId);
+
                                 return addon ? (
                                     <div key={addonId} className="flex justify-between text-gray-600">
-                                        <span>{addon.label}</span>
+                                        <span>{addon.label} upgrade</span>
                                         <span>${addon.price}</span>
                                     </div>
                                 ) : null;
                             })}
                         </div>
-                        <div className="border-t border-gray-200 pt-4">
-                            <div className="flex justify-between items-center">
-                                     <span className="text-2xl text-[#1A1A1A]">
-                          Total Estimate
-                        </span>
-                                <span className="text-3xl text-[#A67C52]">
-                  ${totalPrice}
-                </span>
-                            </div>
-                        </div>
-                    </div>
 
-                    {/* CTA Button */}
+                        <div className="border-t border-gray-200 pt-4">
+
+                            <div className="flex justify-between items-center">
+
+                                <span className="text-2xl text-[#302c2b] font-bold">
+                                    Total Project Estimate
+                                </span>
+
+                                <span className="text-3xl text-[#e54201] font-bold">
+                                    ${totalPrice}
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </article>
+
                     <button
-                        className="w-full bg-[#A67C52] text-white px-8 py-4 rounded hover:bg-[#8B6F47] transition-colors">
-                        Request This Estimate
+                        type="button"
+                        className="w-full bg-[#e54201] text-white px-8 py-4 rounded font-bold hover:bg-[#c83a00] transition-colors shadow-sm"
+                    >
+                        Request This Official Quote
                     </button>
+
                 </div>
             </div>
         </section>

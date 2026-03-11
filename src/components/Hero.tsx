@@ -1,71 +1,101 @@
-import { motion } from "motion/react";
+import { motion } from "framer-motion"; // Note: ensure you use "framer-motion" or "motion/react" based on your install
 import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
 
 export function Hero() {
-  const scrollToContact = () => {
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-  };
+    const scrollToContact = () => {
+        const element = document.getElementById("contact");
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
 
-  return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      <div 
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1769008301910-c69807d0c736?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBtb2Rlcm4lMjBkb29yJTIwZW50cmFuY2V8ZW58MXx8fHwxNzcxODYxNjk2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
+    return (
+        <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-black">
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center text-white">
-        <motion.h1 
-          className="text-5xl md:text-7xl mb-6 tracking-tight"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          Crafting Timeless
-          <br />
-          Elegance in Wood
-        </motion.h1>
-        
-        <motion.p 
-          className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          Premium furniture and custom doors designed to elevate your space
-        </motion.p>
+            {/* Background Image Container */}
+            <div className="absolute inset-0 z-0">
+                <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[10s] scale-105"
+                    style={{
+                        backgroundImage: "url('https://images.unsplash.com/photo-1769008301910-c69807d0c736?auto=format&fit=crop&q=80&w=1920')",
+                        // Added auto=format for better browser delivery
+                    }}
+                />
+                {/* Gradient Overlay for better text readability */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+            </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <Button 
-            size="lg" 
-            className="bg-white text-black hover:bg-white/90 text-lg px-8 py-6 h-auto"
-            onClick={scrollToContact}
-          >
-            Start Your Project
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-        </motion.div>
-      </div>
+            {/* Content Area */}
+            <div className="relative z-10 max-w-6xl mx-auto px-6 text-center text-white">
 
-      <motion.div 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
-      >
-        <div className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2">
-          <div className="w-1.5 h-1.5 bg-white/50 rounded-full" />
-        </div>
-      </motion.div>
-    </section>
-  );
+                <motion.h1
+                    className="text-5xl md:text-8xl font-bold tracking-tight mb-6"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                >
+                    <span className="text-[#e54201]">Premium Doors</span>
+                    <br />
+                    <span className="text-white">Crafted to Perfection</span>
+                </motion.h1>
+
+                <motion.p
+                    className="text-lg md:text-2xl mb-10 text-white/80 max-w-2xl mx-auto leading-relaxed"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                >
+                    Elevate your space with Best Project's custom-engineered
+                    doors and artisanal furniture designed for modern luxury.
+                </motion.p>
+
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                    <Button
+                        size="lg"
+                        className="bg-[#e54201] hover:bg-[#ff4b02] text-white text-lg px-10 py-7 h-auto rounded-full transition-all duration-300 shadow-xl hover:shadow-[#e54201]/20"
+                        onClick={scrollToContact}
+                    >
+                        Start Your Project
+                        <motion.span
+                            className="ml-3"
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                        >
+                            <ArrowRight className="h-5 w-5" />
+                        </motion.span>
+                    </Button>
+                </motion.div>
+            </div>
+
+            {/* Animated Scroll Indicator */}
+            <motion.button
+                onClick={scrollToContact}
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer hidden md:block"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2 }}
+            >
+                <div className="w-7 h-12 border-2 border-white/30 rounded-full flex justify-center p-2 backdrop-blur-sm">
+                    <motion.div
+                        className="w-1.5 h-1.5 bg-[#e54201] rounded-full"
+                        animate={{
+                            y: [0, 20, 0],
+                            opacity: [1, 0.5, 1]
+                        }}
+                        transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                    />
+                </div>
+            </motion.button>
+
+        </section>
+    );
 }

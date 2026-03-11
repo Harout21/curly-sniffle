@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
+// @ts-ignore
+import MAIN_LOGO from "../images/main.png"
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -42,15 +44,16 @@ export function Navigation() {
           isScrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-6 py-1">
           <div className="flex items-center justify-between">
-            <a 
-              href="#" 
-              className={`text-2xl transition-colors ${
-                isScrolled ? "text-primary" : "text-white"
-              }`}
+            <a
+                href="#"
+                className={`flex items-center gap-2 text-2xl transition-colors ${
+                    isScrolled ? "text-primary" : "text-white"
+                }`}
             >
-              Door & More
+              <img src={MAIN_LOGO} alt="logo" className="h-20 w-auto" />
+              {/*<span>Best Project</span>*/}
             </a>
 
             {/* Desktop Navigation */}
@@ -88,26 +91,34 @@ export function Navigation() {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-white md:hidden"
-          >
-            <div className="flex flex-col items-center justify-center h-full gap-8">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className="text-2xl text-primary hover:text-accent transition-colors"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div>
-          </motion.div>
+            <motion.div
+                initial={{ opacity: 0, x: "100%" }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: "100%" }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 z-40 bg-white md:hidden"
+            >
+              {/* Close Button */}
+              <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="absolute top-6 right-6 text-primary"
+              >
+                <X className="w-8 h-8" />
+              </button>
+
+              <div className="flex flex-col items-center justify-center h-full gap-8">
+                {navLinks.map((link) => (
+                    <a
+                        key={link.name}
+                        href={link.href}
+                        onClick={(e) => handleNavClick(e, link.href)}
+                        className="text-2xl text-primary hover:text-accent transition-colors"
+                    >
+                      {link.name}
+                    </a>
+                ))}
+              </div>
+            </motion.div>
         )}
       </AnimatePresence>
     </>

@@ -3,78 +3,110 @@ import { motion } from "motion/react";
 const products = [
   {
     name: "Interior Doors",
-    image: "https://images.unsplash.com/photo-1759262151001-b9cfec26a9d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBpbnRlcmlvciUyMGRvb3IlMjBkZXNpZ258ZW58MXx8fHwxNzcxODYxNjk4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    alt: "Bespoke handcrafted interior wooden doors with premium finish",
+    image: "https://images.unsplash.com/photo-1759262151001-b9cfec26a9d5?auto=format&fit=crop&q=80&w=1080",
     category: "Doors",
   },
   {
     name: "Modern Furniture",
-    image: "https://images.unsplash.com/photo-1763565909003-46e9dfb68a00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBtaW5pbWFsaXN0JTIwZnVybml0dXJlfGVufDF8fHx8MTc3MTgzODMxNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    alt: "Custom minimalist furniture for luxury living rooms",
+    image: "https://images.unsplash.com/photo-1763565909003-46e9dfb68a00?auto=format&fit=crop&q=80&w=1080",
     category: "Furniture",
   },
   {
     name: "Kitchen Cabinets",
-    image: "https://images.unsplash.com/photo-1758548157243-f4ef3e614684?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb250ZW1wb3JhcnklMjBraXRjaGVuJTIwY2FiaW5ldHMlMjB3b29kfGVufDF8fHx8MTc3MTg2MTcwMHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    alt: "Modern wooden kitchen cabinets with artisanal craftsmanship",
+    image: "https://images.unsplash.com/photo-1758548157243-f4ef3e614684?auto=format&fit=crop&q=80&w=1080",
     category: "Furniture",
   },
   {
     name: "Entrance Doors",
-    image: "https://images.unsplash.com/photo-1769008301910-c69807d0c736?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBtb2Rlcm4lMjBkb29yJTIwZW50cmFuY2V8ZW58MXx8fHwxNzcxODYxNjk2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    alt: "Premium exterior entrance doors for modern residential architecture",
+    image: "https://images.unsplash.com/photo-1769008301910-c69807d0c736?auto=format&fit=crop&q=80&w=1080",
     category: "Doors",
   },
   {
     name: "Custom Wardrobes",
-    image: "https://images.unsplash.com/photo-1750420556288-d0e32a6f517b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBiZWRyb29tJTIwaW50ZXJpb3IlMjBkZXNpZ258ZW58MXx8fHwxNzcxNzQ5MDg1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    alt: "Built-in luxury wooden wardrobes and storage solutions",
+    image: "https://images.unsplash.com/photo-1750420556288-d0e32a6f517b?auto=format&fit=crop&q=80&w=1080",
     category: "Furniture",
   },
   {
     name: "Glass Doors",
-    image: "https://images.unsplash.com/photo-1759803545394-041ea7b71989?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBnbGFzcyUyMGRvb3IlMjBlbnRyYW5jZXxlbnwxfHx8fDE3NzE4MDMyMzN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    alt: "Modern sliding glass doors with minimal metal framing",
+    image: "https://images.unsplash.com/photo-1759803545394-041ea7b71989?auto=format&fit=crop&q=80&w=1080",
     category: "Doors",
   },
 ];
 
 export function Products() {
   return (
-    <section id="products" className="py-24 px-6 bg-white">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <p className="text-accent uppercase tracking-widest text-sm mb-2">Our Products</p>
-          <h2 className="text-4xl md:text-5xl tracking-tight">Finished Goods Collection</h2>
-        </motion.div>
+      <section id="products" className="py-24 px-6 bg-white" aria-labelledby="products-heading">
+        <div className="max-w-7xl mx-auto">
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+          {/* Header Section */}
+          <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="group cursor-pointer"
-            >
-              <div className="relative overflow-hidden rounded-sm mb-4 aspect-[4/5]">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-              </div>
-              
-              <div className="space-y-1">
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">{product.category}</p>
-                <h3 className="text-xl">{product.name}</h3>
-              </div>
-            </motion.div>
-          ))}
+              className="text-center mb-16"
+          >
+          <span className="text-[#e54201] uppercase tracking-[0.2em] text-xs font-bold px-3 py-1 mb-3 bg-[#e54201]/10 rounded-full">
+            Our Workflow
+          </span>
+            <h2 id="products-heading" className="text-4xl md:text-5xl font-bold tracking-tight mt-4 text-[#302c2b]">
+              Architectural Product Collection
+            </h2>
+          </motion.div>
+
+          {/* Product Grid - Structured as a List */}
+          <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 list-none p-0">
+            {products.map((product, index) => (
+                <motion.li
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                    viewport={{ once: true }}
+                    className="group cursor-pointer"
+                >
+                  <article>
+                    <div
+                        className="relative overflow-hidden rounded-lg mb-4 aspect-[4/5] bg-slate-100"
+                        role="img"
+                        aria-label={product.alt}
+                    >
+                      <img
+                          src={product.image}
+                          alt={product.alt}
+                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                          loading="lazy"
+                      />
+                      {/* Subtle color overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#302c2b]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+
+                    <div className="space-y-1">
+                      <p className="text-xs uppercase tracking-[0.15em] font-bold text-[#e54201]">
+                        {product.category}
+                      </p>
+                      <h3 className="text-xl font-bold text-[#302c2b] group-hover:text-[#e54201] transition-colors">
+                        {product.name}
+                      </h3>
+                    </div>
+                  </article>
+                </motion.li>
+            ))}
+          </ul>
+
+          {/* Hidden Context for Search Crawlers */}
+          <div className="sr-only">
+            Explore our collection of premium custom doors, modern luxury furniture,
+            bespoke kitchen cabinetry, and architectural entrance solutions
+            crafted with high-quality materials and expert design.
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
   );
 }
