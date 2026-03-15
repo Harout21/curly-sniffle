@@ -1,0 +1,11 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Build Your Dream Website",
+    "button": "Start Your Project"
+  }
+}

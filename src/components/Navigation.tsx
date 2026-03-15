@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 // @ts-ignore
-import MAIN_LOGO from "../images/main.png"
+import MAIN_LOGO from "../images/main.png";
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -15,12 +16,17 @@ const navLinks = [
 
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem("lang", lng);
+  };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const element = document.querySelector(href);
     if (element) {
-      // Offset for the fixed header height (~84px)
       const offset = 84;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
@@ -29,7 +35,7 @@ export function Navigation() {
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: "smooth",
       });
 
       setIsMobileMenuOpen(false);
@@ -41,22 +47,25 @@ export function Navigation() {
         <motion.nav
             initial={{ y: -100 }}
             animate={{ y: 0 }}
-            /* Background is now hardcoded to white with a shadow */
             className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-100"
         >
           <div className="max-w-7xl mx-auto px-6 py-2">
             <div className="flex items-center justify-between">
+
+              {/* Logo */}
               <a
                   href="#"
-                  onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
                   className="flex items-center gap-2 transition-transform hover:scale-105"
                   aria-label="Door & More Home"
               >
-                {/* Logo height adjusted for better visibility on white bg */}
                 <img src={MAIN_LOGO} alt="Door & More Logo" className="h-12 md:h-20 w-auto" />
               </a>
 
-              {/* Desktop Navigation - Text color is now always dark/primary */}
+              {/* Desktop Navigation */}
               <div className="hidden md:flex items-center gap-8">
                 {navLinks.map((link) => (
                     <a
@@ -68,9 +77,20 @@ export function Navigation() {
                       {link.name}
                     </a>
                 ))}
+
+                {/* Language Switcher */}
+                <select
+                    value={i18n.language}
+                    onChange={(e) => changeLanguage(e.target.value)}
+                    className="border border-gray-200 rounded-md px-2 py-1 text-sm font-semibold text-[#302c2b] hover:border-[#e54201] focus:outline-none"
+                >
+                  <option value="en">EN</option>
+                  <option value="hy">HY</option>
+                  <option value="ru">RU</option>
+                </select>
               </div>
 
-              {/* Mobile Menu Button - Color is now always dark */}
+              {/* Mobile Menu Button */}
               <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                   className="md:hidden p-2 text-[#302c2b] hover:text-[#e54201] transition-colors"
@@ -97,7 +117,8 @@ export function Navigation() {
                   className="fixed inset-0 z-[60] bg-white md:hidden"
               >
                 <div className="flex flex-col h-full">
-                  {/* Header inside mobile menu to keep branding visible */}
+
+                  {/* Mobile Header */}
                   <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                     <img src={MAIN_LOGO} alt="logo" className="h-12 w-auto" />
                     <button
@@ -108,6 +129,7 @@ export function Navigation() {
                     </button>
                   </div>
 
+                  {/* Mobile Navigation */}
                   <div className="flex flex-col items-center justify-center flex-grow gap-8">
                     {navLinks.map((link) => (
                         <a
@@ -119,6 +141,17 @@ export function Navigation() {
                           {link.name}
                         </a>
                     ))}
+
+                    {/* Mobile Language Switcher */}
+                    <select
+                        value={i18n.language}
+                        onChange={(e) => changeLanguage(e.target.value)}
+                        className="mt-6 border border-gray-200 rounded-md px-4 py-2 text-lg font-semibold text-[#302c2b]"
+                    >
+                      <option value="en">English</option>
+                      <option value="hy">Հայերեն</option>
+                      <option value="ru">Русский</option>
+                    </select>
                   </div>
                 </div>
               </motion.div>

@@ -1,8 +1,10 @@
 import { motion } from "framer-motion"; // Note: ensure you use "framer-motion" or "motion/react" based on your install
 import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
+import {useTranslation} from "react-i18next";
 
 export function Hero() {
+    const { t } = useTranslation();
     const scrollToContact = () => {
         const element = document.getElementById("contact");
         if (element) {
