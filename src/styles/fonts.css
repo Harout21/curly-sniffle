@@ -1,14 +1,28 @@
+/* Keep your imports */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* Font variables */
 :root {
     --font-serif: 'Cormorant Garamond', serif;
     --font-sans: 'Inter', sans-serif;
+    --font-armenian: 'Noto Sans Armenian', sans-serif; /* optional custom font for Armenian */
+    --font-russian: 'PT Sans', sans-serif; /* optional custom font for Russian */
 }
 
+/* Default */
 body {
     font-family: var(--font-sans);
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-serif);
+/* Language-specific body fonts */
+body.font-en {
+    font-family: var(--font-sans);
+}
+
+body.font-hy {
+    font-family: var(--font-armenian);
+}
+
+body.font-ru {
+    font-family: var(--font-russian);
 }

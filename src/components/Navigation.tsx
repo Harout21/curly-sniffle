@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -34,6 +34,12 @@ export function Navigation() {
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     localStorage.setItem("lang", lng);
+
+    // Remove previous language classes
+    document.body.classList.remove("font-en", "font-hy", "font-ru");
+
+    // Add new class based on language
+    document.body.classList.add(`font-${lng}`);
   };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -54,6 +60,11 @@ export function Navigation() {
       setIsMobileMenuOpen(false);
     }
   };
+
+  useEffect(() => {
+    const lng = localStorage.getItem("lang") || i18n.language;
+    changeLanguage(lng);
+  }, []);
 
   const currentLang = languages.find((l) => l.code === i18n.language);
 
