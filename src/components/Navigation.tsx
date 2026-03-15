@@ -53,7 +53,7 @@ export function Navigation() {
                   aria-label="Door & More Home"
               >
                 {/* Logo height adjusted for better visibility on white bg */}
-                <img src={MAIN_LOGO} alt="Door & More Logo" className="h-16 w-auto" />
+                <img src={MAIN_LOGO} alt="Door & More Logo" className="h-12 md:h-20 w-auto" />
               </a>
 
               {/* Desktop Navigation - Text color is now always dark/primary */}

@@ -56,17 +56,17 @@ export function Hero() {
                     transition={{ duration: 0.5, delay: 0.6 }}
                 >
                     <Button
-                        size="lg"
-                        className="bg-[#e54201] hover:bg-[#ff4b02] text-white text-lg px-10 py-7 h-auto rounded-full transition-all duration-300 shadow-xl hover:shadow-[#e54201]/20"
+                        size="default"
+                        className="bg-[#e54201] hover:bg-[#ff4b02] text-white text-base px-6 py-4 h-auto rounded-full transition-all duration-300 shadow-xl hover:shadow-[#e54201]/20"
                         onClick={scrollToContact}
                     >
                         Start Your Project
                         <motion.span
-                            className="ml-3"
+                            className="ml-2"
                             animate={{ x: [0, 5, 0] }}
                             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                         >
-                            <ArrowRight className="h-5 w-5" />
+                            <ArrowRight className="h-4 w-4" />
                         </motion.span>
                     </Button>
                 </motion.div>
