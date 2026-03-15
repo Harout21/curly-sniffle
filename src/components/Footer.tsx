@@ -1,6 +1,8 @@
 import { Facebook, Instagram, Linkedin, Mail, MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function Footer() {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -13,26 +15,28 @@ export function Footer() {
             {/* Brand & Mission */}
             <div className="lg:col-span-1">
               <h3 className="text-2xl font-bold text-[#e54201] mb-6 tracking-tight">
-              Best Project
+                {t('footer.brand')}
               </h3>
               <p className="text-gray-400 leading-relaxed mb-4">
-                Setting the standard in premium architectural woodwork and custom furniture across Armenia since 2004.
+                {t('footer.mission')}
               </p>
               <div className="flex items-center gap-2 text-sm text-gray-500">
                 <MapPin size={14} className="text-[#e54201]" />
-                <span>Best Project {currentYear} All rights reserved.</span>
+                <span>{t('footer.rights', { year: currentYear })}</span>
               </div>
             </div>
 
             {/* Product Categories (SEO Keywords) */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white mb-6">Products</h4>
+              <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white mb-6">
+                {t('footer.productsTitle')}
+              </h4>
               <ul className="space-y-3">
-                {['Interior Doors', 'Entrance Doors', 'Kitchen Cabinets', 'Custom Furniture'].map((item) => (
-                    <li key={item}>
+                {['interiorDoors', 'entranceDoors', 'kitchenCabinets', 'customFurniture'].map((key) => (
+                    <li key={key}>
                       <a href="#products" className="text-gray-400 hover:text-[#e54201] transition-all duration-300 flex items-center gap-2">
                         <span className="w-1 h-1 bg-gray-700 rounded-full" />
-                        {item}
+                        {t(`footer.products.${key}`)}
                       </a>
                     </li>
                 ))}
@@ -41,24 +45,28 @@ export function Footer() {
 
             {/* Quick Navigation */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white mb-6">Company</h4>
+              <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white mb-6">
+                {t('footer.companyTitle')}
+              </h4>
               <ul className="space-y-3">
-                <li><a href="#about" className="text-gray-400 hover:text-[#e54201] transition-colors">Our Story</a></li>
-                <li><a href="#process" className="text-gray-400 hover:text-[#e54201] transition-colors">Production Process</a></li>
-                <li><a href="#portfolio" className="text-gray-400 hover:text-[#e54201] transition-colors">Recent Projects</a></li>
-                <li><a href="#contact" className="text-gray-400 hover:text-[#e54201] transition-colors">Get an Estimate</a></li>
+                <li><a href="#about" className="text-gray-400 hover:text-[#e54201] transition-colors">{t('footer.company.ourStory')}</a></li>
+                <li><a href="#process" className="text-gray-400 hover:text-[#e54201] transition-colors">{t('footer.company.productionProcess')}</a></li>
+                <li><a href="#portfolio" className="text-gray-400 hover:text-[#e54201] transition-colors">{t('footer.company.recentProjects')}</a></li>
+                <li><a href="#contact" className="text-gray-400 hover:text-[#e54201] transition-colors">{t('footer.company.getEstimate')}</a></li>
               </ul>
             </div>
 
             {/* Social & Contact */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white mb-6">Social Presence</h4>
+              <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white mb-6">
+                {t('footer.socialTitle')}
+              </h4>
               <div className="flex gap-3 mb-8">
                 {[
-                  { icon: <Facebook className="w-5 h-5" />, href: "https://facebook.com", label: "Follow on Facebook" },
-                  { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com", label: "Follow on Instagram" },
-                  { icon: <Linkedin className="w-5 h-5" />, href: "https://linkedin.com", label: "Connect on LinkedIn" },
-                  { icon: <Mail className="w-5 h-5" />, href: "mailto:info@doorandmore.am", label: "Email Us" }
+                  { icon: <Facebook className="w-5 h-5" />, href: "https://facebook.com", label: t('footer.social.facebook') },
+                  { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com", label: t('footer.social.instagram') },
+                  { icon: <Linkedin className="w-5 h-5" />, href: "https://linkedin.com", label: t('footer.social.linkedin') },
+                  { icon: <Mail className="w-5 h-5" />, href: "mailto:info@doorandmore.am", label: t('footer.social.email') }
                 ].map((social, i) => (
                     <a
                         key={i}
@@ -73,7 +81,7 @@ export function Footer() {
                 ))}
               </div>
               <p className="text-xs text-gray-500 leading-relaxed uppercase tracking-tighter">
-                Premium Craftsmen <br /> Verified Local Business
+                {t('footer.craftsmen')}
               </p>
             </div>
           </div>
@@ -81,16 +89,15 @@ export function Footer() {
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[13px] text-gray-500">
             <div className="order-2 md:order-1">
-              © {currentYear} Best Project Architectural Woodworking.
+              {t('footer.bottomBar', { year: currentYear })}
             </div>
 
             <div className="flex gap-8 order-1 md:order-2">
-              <a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="/terms" className="hover:text-white transition-colors">Terms of Service</a>
-              <a href="/sitemap.xml" className="hover:text-white transition-colors hidden md:block">Sitemap</a>
+              <a href="/privacy" className="hover:text-white transition-colors">{t('footer.privacyPolicy')}</a>
+              <a href="/terms" className="hover:text-white transition-colors">{t('footer.terms')}</a>
+              <a href="/sitemap.xml" className="hover:text-white transition-colors hidden md:block">{t('footer.sitemap')}</a>
             </div>
           </div>
-
         </div>
       </footer>
   );

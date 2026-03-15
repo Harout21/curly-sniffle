@@ -1,11 +1,205 @@
 {
   "nav": {
-    "home": "Home",
-    "services": "Services",
-    "contact": "Contact"
+    "about": "About",
+    "process": "Process",
+    "technologies": "Technologies",
+    "products": "Products",
+    "projects": "Projects",
+    "contact": "Contact",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "hero": {
-    "title": "Build Your Dream Website",
-    "button": "Start Your Project"
+    "title1": "Premium Doors",
+    "title2": "Crafted to Perfection",
+    "description": "Elevate your space with Best Project's custom-engineered doors and artisanal furniture designed for modern luxury.",
+    "cta": "Start Your Project"
+  },
+  "about": {
+    "label": "Our Heritage",
+    "headingPart1": "Excellence in",
+    "headingPart2": "Every Detail",
+    "paragraph1": "For over two decades, **Best Project** has been a leader in architectural millwork, combining traditional woodworking craftsmanship with state-of-the-art precision technology.",
+    "paragraph2": "Our expert artisans treat every piece as a signature statement. Whether it's a grand entrance or bespoke interior furniture, we ensure every product exceeds European quality standards.",
+    "imageAlt": "Artisanal door craftsmanship at Best Project workshop",
+    "stats": {
+      "years": "Years of Mastery",
+      "installations": "Installations",
+      "quality": "Quality Guarantee"
+    }
+  },
+  "process": {
+    "label": "Our Workflow",
+    "heading": "From Vision to Reality",
+    "steps": {
+      "design": {
+        "title": "Design & Consultation",
+        "description": "We work closely with you to understand your vision and create custom designs that match your aesthetic."
+      },
+      "craftsmanship": {
+        "title": "Expert Craftsmanship",
+        "description": "Our skilled artisans bring designs to life using premium materials and time-honored techniques."
+      },
+      "finishing": {
+        "title": "Quality Finishing",
+        "description": "Every piece undergoes meticulous finishing to ensure a flawless, luxurious appearance."
+      },
+      "delivery": {
+        "title": "Delivery & Installation",
+        "description": "Professional delivery and installation ensures perfect placement in your space."
+      }
+    }
+  },
+  "calculator": {
+    "heading": "Custom Furniture Price Calculator",
+    "description": "Get an instant cost estimate for your premium custom furniture project.",
+    "selectMaterial": "Select Material Type",
+    "width": "Project Width (cm)",
+    "height": "Project Height (cm)",
+    "additionalFeatures": "Additional Custom Features",
+    "addons": {
+      "led": "LED Lighting",
+      "softClose": "Soft Close Hinges",
+      "customColor": "Custom Color Finish"
+    },
+    "materials": {
+      "mdf": "MDF (Most Affordable)",
+      "solidWood": "Solid Wood",
+      "premium": "Premium Hardwood"
+    },
+    "priceSummary": "Quote Summary",
+    "priceBreakdown": "Project Price Breakdown",
+    "materialCost": "Material Cost ({{area}} m²)",
+    "upgrade": "{{addon}} upgrade",
+    "totalEstimate": "Total Project Estimate",
+    "requestQuote": "Request This Official Quote"
+  },
+  "technologies": {
+    "workflow": "Our Workflow",
+    "heading": "Architectural Product Collection",
+    "materials": {
+      "premiumOak": {
+        "name": "Premium Oak",
+        "alt": "Sustainable premium oak wood texture for custom door manufacturing",
+        "description": "Sourced from sustainable forests for long-lasting structural integrity."
+      },
+      "walnutWood": {
+        "name": "Walnut Wood",
+        "alt": "Rich dark walnut wood finish for luxury custom furniture",
+        "description": "Rich tones and exceptional durability for high-end interior design."
+      },
+      "cncTech": {
+        "name": "CNC Technology",
+        "alt": "Precision CNC machinery cutting wood for custom furniture designs",
+        "description": "High-precision cutting and design accuracy for complex architectural patterns."
+      },
+      "glassMetal": {
+        "name": "Glass & Metal",
+        "alt": "Modern glass and metal door accents for contemporary home entrances",
+        "description": "Contemporary accents and finishes that define modern aesthetic standards."
+      }
+    },
+    "seoText": "Best Project specializes in custom door manufacturing using sustainable oak, luxury walnut, and advanced CNC woodworking technology. Our artisanal approach combines modern glass and metal accents for high-end residential and commercial interiors."
+  },
+  "products": {
+    "workflow": "Our Workflow",
+    "collectionTitle": "Architectural Product Collection",
+    "categories": {
+      "doors": "Doors",
+      "furniture": "Furniture"
+    },
+    "names": {
+      "interiorDoors": "Interior Doors",
+      "modernFurniture": "Modern Furniture",
+      "kitchenCabinets": "Kitchen Cabinets",
+      "entranceDoors": "Entrance Doors",
+      "customWardrobes": "Custom Wardrobes",
+      "glassDoors": "Glass Doors"
+    },
+    "altTexts": {
+      "interiorDoorsAlt": "Bespoke handcrafted interior wooden doors with premium finish",
+      "modernFurnitureAlt": "Custom minimalist furniture for luxury living rooms",
+      "kitchenCabinetsAlt": "Modern wooden kitchen cabinets with artisanal craftsmanship",
+      "entranceDoorsAlt": "Premium exterior entrance doors for modern residential architecture",
+      "customWardrobesAlt": "Built-in luxury wooden wardrobes and storage solutions",
+      "glassDoorsAlt": "Modern sliding glass doors with minimal metal framing"
+    },
+    "hiddenDescription": "Explore our collection of premium custom doors, modern luxury furniture, bespoke kitchen cabinetry, and architectural entrance solutions crafted with high-quality materials and expert design."
+  },
+  "projects": {
+    "workflow": "Our Workflow",
+    "heading": "Recent Completed Projects",
+    "modernLivingSpace": {
+      "title": "Modern Living Space",
+      "location": "Yerevan, Armenia",
+      "alt": "Modern luxury living room interior featuring custom woodwork in Yerevan"
+    },
+    "contemporaryBedroom": {
+      "title": "Contemporary Bedroom",
+      "location": "Yerevan, Armenia",
+      "alt": "Contemporary bedroom furniture and custom wardrobes in Yerevan"
+    },
+    "executiveOffice": {
+      "title": "Executive Office",
+      "location": "Yerevan, Armenia",
+      "alt": "Premium executive office interior design and custom desk in Armenia"
+    },
+    "luxuryKitchen": {
+      "title": "Luxury Kitchen",
+      "location": "Yerevan, Armenia",
+      "alt": "Luxury custom kitchen cabinets and woodwork installation in Yerevan"
+    },
+    "hiddenDescription": "Showcasing architectural woodwork and custom furniture projects across Armenia, specifically in Yerevan. Our portfolio includes modern living spaces, luxury kitchen installations, and executive office designs."
+  },
+  "contact": {
+    "workflow": "Our Workflow",
+    "heading": "Let's Create Something Beautiful",
+    "consultation": "Project Consultation",
+    "phoneLabel": "Phone",
+    "emailLabel": "Email",
+    "workshopLabel": "Our Workshop",
+    "workshopLocation": "Yerevan, Armenia",
+    "mapTitle": "Best Project Workshop Location in Yerevan",
+    "fullNameLabel": "Full Name",
+    "fullNamePlaceholder": "Enter your name",
+    "emailAddressLabel": "Email Address",
+    "emailAddressPlaceholder": "email@example.am",
+    "phoneNumberLabel": "Phone Number (Optional)",
+    "phoneNumberPlaceholder": "+374 __ ___ ___",
+    "projectDetailsLabel": "Project Details",
+    "projectDetailsPlaceholder": "Tell us about the custom doors or furniture you need...",
+    "requestConsultation": "Request Consultation",
+    "alertMessage": "Thank you for your inquiry! We will contact you soon."
+  },
+  "footer": {
+    "brand": "Best Project",
+    "mission": "Setting the standard in premium architectural woodwork and custom furniture across Armenia since 2004.",
+    "rights": "Best Project {{year}} All rights reserved.",
+    "productsTitle": "Products",
+    "products": {
+      "interiorDoors": "Interior Doors",
+      "entranceDoors": "Entrance Doors",
+      "kitchenCabinets": "Kitchen Cabinets",
+      "customFurniture": "Custom Furniture"
+    },
+    "companyTitle": "Company",
+    "company": {
+      "ourStory": "Our Story",
+      "productionProcess": "Production Process",
+      "recentProjects": "Recent Projects",
+      "getEstimate": "Get an Estimate"
+    },
+    "socialTitle": "Social Presence",
+    "social": {
+      "facebook": "Follow on Facebook",
+      "instagram": "Follow on Instagram",
+      "linkedin": "Connect on LinkedIn",
+      "email": "Email Us"
+    },
+    "craftsmen": "Premium Craftsmen\nVerified Local Business",
+    "bottomBar": "© {{year}} Best Project Architectural Woodworking.",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "sitemap": "Sitemap"
   }
 }

@@ -1,30 +1,33 @@
 import { motion } from "framer-motion";
 import { Pencil, Hammer, Sparkles, PackageCheck } from "lucide-react";
-
-const steps = [
-  {
-    icon: Pencil,
-    title: "Design & Consultation",
-    description: "We work closely with you to understand your vision and create custom designs that match your aesthetic.",
-  },
-  {
-    icon: Hammer,
-    title: "Expert Craftsmanship",
-    description: "Our skilled artisans bring designs to life using premium materials and time-honored techniques.",
-  },
-  {
-    icon: Sparkles,
-    title: "Quality Finishing",
-    description: "Every piece undergoes meticulous finishing to ensure a flawless, luxurious appearance.",
-  },
-  {
-    icon: PackageCheck,
-    title: "Delivery & Installation",
-    description: "Professional delivery and installation ensures perfect placement in your space.",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export function ProductionProcess() {
+  const { t } = useTranslation();
+
+  const steps = [
+    {
+      icon: Pencil,
+      title: t("process.steps.design.title"),
+      description: t("process.steps.design.description"),
+    },
+    {
+      icon: Hammer,
+      title: t("process.steps.craftsmanship.title"),
+      description: t("process.steps.craftsmanship.description"),
+    },
+    {
+      icon: Sparkles,
+      title: t("process.steps.finishing.title"),
+      description: t("process.steps.finishing.description"),
+    },
+    {
+      icon: PackageCheck,
+      title: t("process.steps.delivery.title"),
+      description: t("process.steps.delivery.description"),
+    },
+  ];
+
   return (
       <section id="process" className="py-24 px-6 bg-[#fcfcfc] overflow-hidden">
         <div className="max-w-7xl mx-auto">
@@ -38,18 +41,17 @@ export function ProductionProcess() {
               className="text-center mb-20"
           >
           <span className="text-[#e54201] uppercase tracking-[0.2em] text-xs font-bold px-3 py-1 bg-[#e54201]/10 rounded-full">
-            Our Workflow
+            {t("process.label")}
           </span>
 
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mt-4">
-              From Vision to Reality
+              {t("process.heading")}
             </h2>
             <div className="w-20 h-1 bg-[#e54201] mx-auto mt-6 rounded-full" />
           </motion.div>
 
           {/* Steps Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-
             {steps.map((step, index) => {
               const Icon = step.icon;
 

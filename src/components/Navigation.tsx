@@ -4,19 +4,32 @@ import { Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 // @ts-ignore
 import MAIN_LOGO from "../images/main.png";
+// @ts-ignore
+import FLAG_US from "../images/en.png";
+// @ts-ignore
+import FLAG_AM from "../images/hy.png";
+// @ts-ignore
+import FLAG_RU from "../images/ru.png";
 
-const navLinks = [
-  { name: "About", href: "#about" },
-  { name: "Process", href: "#process" },
-  { name: "Technologies", href: "#technologies" },
-  { name: "Products", href: "#products" },
-  { name: "Projects", href: "#projects" },
-  { name: "Contact", href: "#contact" },
+const languages = [
+  { code: "en", label: "English", flag: FLAG_US },
+  { code: "hy", label: "Հայերեն", flag: FLAG_AM },
+  { code: "ru", label: "Русский", flag: FLAG_RU },
 ];
 
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { i18n } = useTranslation();
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const { i18n, t } = useTranslation();
+
+  const navLinks = [
+    { name: t("nav.about"), href: "#about" },
+    { name: t("nav.process"), href: "#process" },
+    { name: t("nav.technologies"), href: "#technologies" },
+    { name: t("nav.products"), href: "#products" },
+    { name: t("nav.projects"), href: "#projects" },
+    { name: t("nav.contact"), href: "#contact" },
+  ];
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -41,6 +54,8 @@ export function Navigation() {
       setIsMobileMenuOpen(false);
     }
   };
+
+  const currentLang = languages.find((l) => l.code === i18n.language);
 
   return (
       <>
@@ -79,28 +94,41 @@ export function Navigation() {
                 ))}
 
                 {/* Language Switcher */}
-                <select
-                    value={i18n.language}
-                    onChange={(e) => changeLanguage(e.target.value)}
-                    className="border border-gray-200 rounded-md px-2 py-1 text-sm font-semibold text-[#302c2b] hover:border-[#e54201] focus:outline-none"
-                >
-                  <option value="en">EN</option>
-                  <option value="hy">HY</option>
-                  <option value="ru">RU</option>
-                </select>
+                <div className="relative">
+                  <button
+                      onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                      className="flex items-center gap-2 border border-gray-200 rounded-md px-2 py-1 text-sm font-semibold text-[#302c2b] hover:border-[#e54201]"
+                  >
+                    <img src={currentLang?.flag} alt="" className="w-5 h-5" />
+                    <span>{currentLang?.label}</span>
+                  </button>
+                  {langDropdownOpen && (
+                      <div className="absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                        {languages.map((lang) => (
+                            <div
+                                key={lang.code}
+                                onClick={() => {
+                                  changeLanguage(lang.code);
+                                  setLangDropdownOpen(false);
+                                }}
+                                className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                            >
+                              <img src={lang.flag} alt="" className="w-5 h-5" />
+                              <span>{lang.label}</span>
+                            </div>
+                        ))}
+                      </div>
+                  )}
+                </div>
               </div>
 
               {/* Mobile Menu Button */}
               <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                   className="md:hidden p-2 text-[#302c2b] hover:text-[#e54201] transition-colors"
-                  aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                  aria-label={isMobileMenuOpen ? t("nav.closeMenu") : t("nav.openMenu")}
               >
-                {isMobileMenuOpen ? (
-                    <X className="w-6 h-6" />
-                ) : (
-                    <Menu className="w-6 h-6" />
-                )}
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
           </div>
@@ -143,15 +171,33 @@ export function Navigation() {
                     ))}
 
                     {/* Mobile Language Switcher */}
-                    <select
-                        value={i18n.language}
-                        onChange={(e) => changeLanguage(e.target.value)}
-                        className="mt-6 border border-gray-200 rounded-md px-4 py-2 text-lg font-semibold text-[#302c2b]"
-                    >
-                      <option value="en">English</option>
-                      <option value="hy">Հայերեն</option>
-                      <option value="ru">Русский</option>
-                    </select>
+                    <div className="relative mt-6">
+                      <button
+                          onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                          className="flex items-center gap-2 border border-gray-200 rounded-md px-4 py-2 text-lg font-semibold text-[#302c2b]"
+                      >
+                        <img src={currentLang?.flag} alt="" className="w-6 h-6" />
+                        <span>{currentLang?.label}</span>
+                      </button>
+                      {langDropdownOpen && (
+                          <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                            {languages.map((lang) => (
+                                <div
+                                    key={lang.code}
+                                    onClick={() => {
+                                      changeLanguage(lang.code);
+                                      setLangDropdownOpen(false);
+                                      setIsMobileMenuOpen(false);
+                                    }}
+                                    className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                                >
+                                  <img src={lang.flag} alt="" className="w-5 h-5" />
+                                  <span>{lang.label}</span>
+                                </div>
+                            ))}
+                          </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </motion.div>

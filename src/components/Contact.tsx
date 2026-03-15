@@ -4,8 +4,11 @@ import { Phone, Mail, MapPin, Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { useTranslation } from "react-i18next";
 
 export function Contact() {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,8 +18,7 @@ export function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Logic for SEO: You could trigger a GTM event here to track conversions
-    alert("Thank you for your inquiry! We will contact you soon.");
+    alert(t('contact.alertMessage'));
     setFormData({ name: "", email: "", phone: "", message: "" });
   };
 
@@ -36,11 +38,11 @@ export function Contact() {
               viewport={{ once: true }}
               className="text-center mb-16"
           >
-            <span className="text-[#e54201] uppercase tracking-[0.2em] text-xs font-bold px-3 py-1 mb-3 bg-[#e54201]/10 rounded-full">
-            Our Workflow
+          <span className="text-[#e54201] uppercase tracking-[0.2em] text-xs font-bold px-3 py-1 mb-3 bg-[#e54201]/10 rounded-full">
+            {t('contact.workflow')}
           </span>
-            <h2 id="contact-heading" className="text-4xl md:text-5xl mt-4 font-bold tracking-tight ">
-              Let's Create Something Beautiful
+            <h2 id="contact-heading" className="text-4xl md:text-5xl mt-4 font-bold tracking-tight">
+              {t('contact.heading')}
             </h2>
           </motion.div>
 
@@ -54,7 +56,7 @@ export function Contact() {
                 viewport={{ once: true }}
             >
               <h3 className="text-2xl font-semibold mb-8 text-[#1a1a1a]">
-                Project Consultation
+                {t('contact.consultation')}
               </h3>
 
               <address className="not-italic space-y-6 mb-12">
@@ -63,7 +65,7 @@ export function Contact() {
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-wider text-[#6b6b6b] mb-1">Phone</div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-[#6b6b6b] mb-1">{t('contact.phoneLabel')}</div>
                     <div className="text-lg text-[#1a1a1a] font-medium">+374 (10) 123-456</div>
                   </div>
                 </a>
@@ -73,7 +75,7 @@ export function Contact() {
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-wider text-[#6b6b6b] mb-1">Email</div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-[#6b6b6b] mb-1">{t('contact.emailLabel')}</div>
                     <div className="text-lg text-[#1a1a1a] font-medium">info@doorandmore.am</div>
                   </div>
                 </a>
@@ -83,8 +85,8 @@ export function Contact() {
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-wider text-[#6b6b6b] mb-1">Our Workshop</div>
-                    <div className="text-lg text-[#1a1a1a] font-medium">Yerevan, Armenia</div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-[#6b6b6b] mb-1">{t('contact.workshopLabel')}</div>
+                    <div className="text-lg text-[#1a1a1a] font-medium">{t('contact.workshopLocation')}</div>
                   </div>
                 </div>
               </address>
@@ -98,7 +100,7 @@ export function Contact() {
                     style={{ border: 0 }}
                     allowFullScreen
                     loading="lazy"
-                    title="Best Project Workshop Location in Yerevan"
+                    title={t('contact.mapTitle')}
                 />
               </div>
             </motion.div>
@@ -113,11 +115,11 @@ export function Contact() {
             >
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid gap-2">
-                  <label htmlFor="name" className="text-sm font-bold text-gray-700">Full Name</label>
+                  <label htmlFor="name" className="text-sm font-bold text-gray-700">{t('contact.fullNameLabel')}</label>
                   <Input
                       id="name"
                       name="name"
-                      placeholder="Enter your name"
+                      placeholder={t('contact.fullNamePlaceholder')}
                       value={formData.name}
                       onChange={handleChange}
                       required
@@ -126,12 +128,12 @@ export function Contact() {
                 </div>
 
                 <div className="grid gap-2">
-                  <label htmlFor="email" className="text-sm font-bold text-gray-700">Email Address</label>
+                  <label htmlFor="email" className="text-sm font-bold text-gray-700">{t('contact.emailAddressLabel')}</label>
                   <Input
                       id="email"
                       name="email"
                       type="email"
-                      placeholder="email@example.am"
+                      placeholder={t('contact.emailAddressPlaceholder')}
                       value={formData.email}
                       onChange={handleChange}
                       required
@@ -140,12 +142,12 @@ export function Contact() {
                 </div>
 
                 <div className="grid gap-2">
-                  <label htmlFor="phone" className="text-sm font-bold text-gray-700">Phone Number (Optional)</label>
+                  <label htmlFor="phone" className="text-sm font-bold text-gray-700">{t('contact.phoneNumberLabel')}</label>
                   <Input
                       id="phone"
                       name="phone"
                       type="tel"
-                      placeholder="+374 __ ___ ___"
+                      placeholder={t('contact.phoneNumberPlaceholder')}
                       value={formData.phone}
                       onChange={handleChange}
                       className="bg-gray-50 border-gray-200 focus:bg-white"
@@ -153,11 +155,11 @@ export function Contact() {
                 </div>
 
                 <div className="grid gap-2">
-                  <label htmlFor="message" className="text-sm font-bold text-gray-700">Project Details</label>
+                  <label htmlFor="message" className="text-sm font-bold text-gray-700">{t('contact.projectDetailsLabel')}</label>
                   <Textarea
                       id="message"
                       name="message"
-                      placeholder="Tell us about the custom doors or furniture you need..."
+                      placeholder={t('contact.projectDetailsPlaceholder')}
                       value={formData.message}
                       onChange={handleChange}
                       required
@@ -170,7 +172,7 @@ export function Contact() {
                     type="submit"
                     className="w-full h-14 text-lg font-bold text-white bg-[#e54201] hover:bg-[#ff4b02] shadow-lg shadow-[#e54201]/20 transition-all active:scale-95"
                 >
-                  Request Consultation
+                  {t('contact.requestConsultation')}
                   <Send className="ml-2 h-5 w-5" />
                 </Button>
               </form>
