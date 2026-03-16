@@ -169,7 +169,11 @@
     "projectDetailsLabel": "Project Details",
     "projectDetailsPlaceholder": "Tell us about the custom doors or furniture you need...",
     "requestConsultation": "Request Consultation",
-    "alertMessage": "Thank you for your inquiry! We will contact you soon."
+    "alertMessage": "Thank you for your inquiry! We will contact you soon.",
+    "companyLabel": "Company",
+    "companyPlaceholder": "Your company name",
+    "projectTypeLabel": "Project Type",
+    "projectTypePlaceholder": "Doors, renovation, installation..."
   },
   "footer": {
     "brand": "Best Project",

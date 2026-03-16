@@ -11,12 +11,12 @@
 
 /* Default */
 body {
-    font-family: var(--font-sans);
+    font-family: var(--font-armenian);
 }
 
 /* Language-specific body fonts */
 body.font-en {
-    font-family: var(--font-sans);
+    font-family: var(--font-serif);
 }
 
 body.font-hy {

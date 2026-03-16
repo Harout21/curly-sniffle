@@ -168,8 +168,12 @@
     "phoneNumberPlaceholder": "+374 __ ___ ___",
     "projectDetailsLabel": "Նախագծի մանրամասներ",
     "projectDetailsPlaceholder": "Մեր հետ կիսվեք պատվերով դռների կամ կահույքի մասին ձեր պահանջներով...",
-    "requestConsultation": "Խնդրանք խորհրդատվության",
-    "alertMessage": "Շնորհակալություն ձեր հարցման համար։ Մենք շուտով կապ կհաստատենք ձեզ հետ։"
+    "requestConsultation": "խորհրդատվության",
+    "alertMessage": "Շնորհակալություն ձեր հարցման համար։ Մենք շուտով կապ կհաստատենք ձեզ հետ։",
+    "companyLabel": "Ընկերություն",
+    "companyPlaceholder": "Ձեր ընկերության անունը",
+    "projectTypeLabel": "Նախագծի տեսակ",
+    "projectTypePlaceholder": "Դռներ, վերանորոգում, տեղադրում..."
   },
   "footer": {
     "brand": "Բեսթ Փրոջեկտ",

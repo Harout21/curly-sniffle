@@ -169,7 +169,11 @@
     "projectDetailsLabel": "Детали проекта",
     "projectDetailsPlaceholder": "Расскажите нам о дверях или мебели, которые вам нужны...",
     "requestConsultation": "Запросить консультацию",
-    "alertMessage": "Спасибо за ваш запрос! Мы свяжемся с вами в ближайшее время."
+    "alertMessage": "Спасибо за ваш запрос! Мы свяжемся с вами в ближайшее время.",
+    "companyLabel": "Компания",
+    "companyPlaceholder": "Название вашей компании",
+    "projectTypeLabel": "Тип проекта",
+    "projectTypePlaceholder": "Двери, ремонт, установка..."
   },
   "footer": {
     "brand": "Best Project",
