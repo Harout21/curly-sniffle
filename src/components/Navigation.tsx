@@ -33,9 +33,8 @@ export function Navigation() {
     { name: t("nav.products"), href: "#products", type: "scroll" },
     { name: t("nav.projects"), href: "#projects", type: "scroll" },
     { name: t("nav.contact"), href: "#contact", type: "scroll" },
-
-    // 🌐 ROUTE LINK (NEW)
     { name: t("stones"), href: "/stones", type: "route" },
+    { name: t("projects-all"), href: "/projects", type: "route" }
   ];
 
   const changeLanguage = (lng: string) => {
