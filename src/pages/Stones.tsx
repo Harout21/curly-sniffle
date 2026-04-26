@@ -1,31 +1,48 @@
 import { Link } from "react-router-dom";
 import { stones } from "../data/stonesData";
-import {t} from "i18next";
+import { t } from "i18next";
 
 export default function Stones() {
     return (
-        <div className="max-w-6xl mx-auto px-6 py-20">
-            <h1 className="text-3xl font-bold mb-10">{t('stones')}</h1>
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-24">
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* HEADER */}
+            <div className="mb-12">
+                <h1 className="text-3xl md:text-5xl font-bold text-[#302c2b]">
+                    {t("stones")}
+                </h1>
+                <div className="w-20 h-1 bg-[#e54201] mt-4"></div>
+            </div>
+
+            {/* GRID */}
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+
                 {stones.map((stone) => (
                     <Link
                         key={stone.id}
                         to={`/stones/${stone.id}`}
-                        className="border rounded-lg overflow-hidden hover:shadow-lg transition"
+                        className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
                     >
-                        {/* first image */}
-                        <img
-                            src={stone.images[0]}
-                            alt={stone.name}
-                            className="h-48 w-full object-cover"
-                        />
 
-                        <div className="p-4">
-                            <h2 className="font-semibold">{stone.name}</h2>
+                        {/* IMAGE */}
+                        <div className="overflow-hidden bg-gray-50">
+                            <img
+                                src={stone.images[0]}
+                                alt={stone.name}
+                                className="h-52 md:h-64 w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
                         </div>
+
+                        {/* CONTENT */}
+                        <div className="p-5 md:p-6">
+                            <h2 className="font-semibold text-[#302c2b] group-hover:text-[#e54201] transition-colors text-base md:text-lg">
+                                {stone.name}
+                            </h2>
+                        </div>
+
                     </Link>
                 ))}
+
             </div>
         </div>
     );

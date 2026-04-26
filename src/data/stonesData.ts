@@ -5,8 +5,8 @@ import p118_2 from "../images/stones/P118-Natural-White1.webp";
 
 export const stones = [
     // P Series
-    { id: "p-103-pure-translucent", name: "P 103 Pure Translucent", images: [p103_1, p103_2] },
-    { id: "p-118-natural-white", name: "P 118 Natural White", images: [p118_1, p118_2] },
+    { id: "p-103-pure-translucent", name: "P 103 Pure Translucent", images: [p103_2, p103_1] },
+    { id: "p-118-natural-white", name: "P 118 Natural White", images: [ p118_2, p118_1] },
     { id: "p-119-whale-white", name: "P 119 Whale White", images: [] },
     { id: "p-197-deep-sea", name: "P 197 Deep Sea", images: [] },
     { id: "p-198-mango", name: "P 198 Mango", images: [] },
