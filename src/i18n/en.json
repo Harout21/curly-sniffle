@@ -205,5 +205,15 @@
     "privacyPolicy": "Privacy Policy",
     "terms": "Terms of Service",
     "sitemap": "Sitemap"
+  },
+  "seo": {
+    "home": {
+      "title": "Best Furniture in Armenia | BestProject.am",
+      "description": "Buy modern furniture in Armenia. Sofas, beds, tables and custom designs with best quality and price."
+    },
+    "products": {
+      "title": "Furniture Products | BestProject.am",
+      "description": "Explore our furniture collection: sofas, chairs, tables, and home decor."
+    }
   }
 }

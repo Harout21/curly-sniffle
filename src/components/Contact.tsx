@@ -258,7 +258,7 @@ export function Contact() {
                       onChange={handleChange}
                       required
                       rows={5}
-                      className="w-full bg-gray-50 border-gray-200"
+                      className="w-full h-50 bg-gray-50 border-gray-200"
                   />
                 </div>
 

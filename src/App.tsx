@@ -8,21 +8,25 @@ import {Projects} from "./components/Projects";
 import {Contact} from "./components/Contact";
 import {Footer} from "./components/Footer";
 import {PriceCalculator} from "./components/PriceCalculator";
+import SEO from "./components/Seo";
 
 
 export default function App() {
     return (
-        <div className="min-h-screen">
-            <Navigation/>
-            <Hero/>
-            <AboutUs/>
-            <ProductionProcess/>
-            <PriceCalculator/>
-            <Technologies/>
-            <Products/>
-            <Projects/>
-            <Contact/>
-            <Footer/>
-        </div>
+        <>
+            <SEO page="home" />
+            <div className="min-h-screen">
+                <Navigation/>
+                <Hero/>
+                <AboutUs/>
+                <ProductionProcess/>
+                <PriceCalculator/>
+                <Technologies/>
+                <Products/>
+                <Projects/>
+                <Contact/>
+                <Footer/>
+            </div>
+        </>
     );
 }
