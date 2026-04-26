@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import CategoryImage from "../images/33.jpeg";
 
 export function AboutUs() {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export function AboutUs() {
                 className="relative"
             >
               <img
-                  src="https://images.unsplash.com/photo-1674065719169-5ba77e617e60?auto=format&fit=crop&q=80&w=1400"
+                  src={CategoryImage}
                   alt={t("about.imageAlt")}
                   className="w-full h-[400px] md:h-[600px] object-cover rounded-2xl shadow-2xl relative z-10"
                   loading="lazy"

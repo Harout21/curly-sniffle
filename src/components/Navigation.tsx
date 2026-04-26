@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+
 // @ts-ignore
 import MAIN_LOGO from "../images/main.png";
 // @ts-ignore
@@ -20,33 +22,51 @@ const languages = [
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+
   const { i18n, t } = useTranslation();
+  const navigate = useNavigate();
 
   const navLinks = [
-    { name: t("nav.about"), href: "#about" },
-    { name: t("nav.process"), href: "#process" },
-    { name: t("nav.technologies"), href: "#technologies" },
-    { name: t("nav.products"), href: "#products" },
-    { name: t("nav.projects"), href: "#projects" },
-    { name: t("nav.contact"), href: "#contact" },
+    { name: t("nav.about"), href: "#about", type: "scroll" },
+    { name: t("nav.process"), href: "#process", type: "scroll" },
+    { name: t("nav.technologies"), href: "#technologies", type: "scroll" },
+    { name: t("nav.products"), href: "#products", type: "scroll" },
+    { name: t("nav.projects"), href: "#projects", type: "scroll" },
+    { name: t("nav.contact"), href: "#contact", type: "scroll" },
+
+    // 🌐 ROUTE LINK (NEW)
+    { name: "Stones", href: "/stones", type: "route" },
   ];
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     localStorage.setItem("lang", lng);
+
     document.body.classList.remove("font-en", "font-hy", "font-ru");
     document.body.classList.add(`font-${lng}`);
   };
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (
+      e: React.MouseEvent<HTMLAnchorElement>,
+      link: any
+  ) => {
     e.preventDefault();
-    const element = document.querySelector(href);
+
+    // 🌐 ROUTE NAVIGATION
+    if (link.type === "route") {
+      navigate(link.href);
+      setIsMobileMenuOpen(false);
+      return;
+    }
+
+    // 📍 SCROLL NAVIGATION
+    const element = document.querySelector(link.href);
     if (element) {
       const offset = 84;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
+      const offsetPosition = elementRect - bodyRect - offset;
+
       window.scrollTo({ top: offsetPosition, behavior: "smooth" });
       setIsMobileMenuOpen(false);
     }
@@ -70,43 +90,44 @@ export function Navigation() {
           <div className="max-w-7xl mx-auto px-6 py-2">
             <div className="flex items-center justify-between">
 
-              {/* Logo */}
+              {/* LOGO */}
               <a
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
+                    navigate("/");
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                   className="flex items-center gap-2 transition-transform hover:scale-105"
-                  aria-label="Door & More Home"
               >
-                <img src={MAIN_LOGO} alt="Door & More Logo" className="h-12 md:h-20 w-auto" />
+                <img src={MAIN_LOGO} alt="Logo" className="h-12 md:h-20 w-auto" />
               </a>
 
-              {/* Desktop Navigation */}
+              {/* DESKTOP MENU */}
               <div className="hidden md:flex items-center gap-8">
                 {navLinks.map((link) => (
                     <a
                         key={link.name}
                         href={link.href}
-                        onClick={(e) => handleNavClick(e, link.href)}
-                        className="text-sm font-bold uppercase tracking-widest text-[#302c2b] hover:text-[#e54201] transition-colors duration-200"
+                        onClick={(e) => handleNavClick(e, link)}
+                        className="text-sm font-bold uppercase tracking-widest text-[#302c2b] hover:text-[#e54201]"
                     >
                       {link.name}
                     </a>
                 ))}
 
-                {/* Desktop Language Switcher */}
+                {/* LANGUAGE */}
                 <div className="relative">
                   <button
                       onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                      className="flex items-center gap-2 border border-gray-200 rounded-md px-2 py-1 text-sm font-semibold text-[#302c2b] hover:border-[#e54201]"
+                      className="flex items-center gap-2 border px-2 py-1 rounded-md"
                   >
-                    <img src={currentLang?.flag} alt="" className="w-5 h-5" />
+                    <img src={currentLang?.flag} className="w-5 h-5" />
                     <span>{currentLang?.label}</span>
                   </button>
+
                   {langDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                      <div className="absolute right-0 mt-2 w-36 bg-white border rounded-md shadow-lg">
                         {languages.map((lang) => (
                             <div
                                 key={lang.code}
@@ -116,7 +137,7 @@ export function Navigation() {
                                 }}
                                 className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 cursor-pointer"
                             >
-                              <img src={lang.flag} alt="" className="w-5 h-5" />
+                              <img src={lang.flag} className="w-5 h-5" />
                               <span>{lang.label}</span>
                             </div>
                         ))}
@@ -125,13 +146,12 @@ export function Navigation() {
                 </div>
               </div>
 
-              {/* Mobile Menu Button */}
+              {/* MOBILE BUTTON */}
               <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="md:hidden p-2 text-[#302c2b] hover:text-[#e54201] transition-colors"
-                  aria-label={isMobileMenuOpen ? t("nav.closeMenu") : t("nav.openMenu")}
+                  className="md:hidden p-2"
               >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isMobileMenuOpen ? <X /> : <Menu />}
               </button>
             </div>
           </div>
@@ -144,68 +164,31 @@ export function Navigation() {
                   initial={{ opacity: 0, x: "100%" }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: "100%" }}
-                  transition={{ type: "spring", damping: 25, stiffness: 200 }}
                   className="fixed inset-0 z-[60] bg-white md:hidden"
               >
                 <div className="flex flex-col h-full">
 
-                  {/* Mobile Header */}
-                  <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                    <img src={MAIN_LOGO} alt="logo" className="h-12 w-auto" />
-                    <button
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="p-2 text-[#e54201]"
-                    >
-                      <X className="w-8 h-8" />
+                  {/* HEADER */}
+                  <div className="flex justify-between p-4 border-b">
+                    <img src={MAIN_LOGO} className="h-12" />
+                    <button onClick={() => setIsMobileMenuOpen(false)}>
+                      <X />
                     </button>
                   </div>
 
-                  {/* Mobile Language Switcher */}
-                  <div className="flex flex-col items-center pt-8">
-                    <div className="relative mb-10">
-                      <button
-                          onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                          className="flex items-center gap-3 border border-gray-200 rounded-md px-5 py-3 text-lg font-semibold text-[#302c2b]"
-                      >
-                        <img src={currentLang?.flag} alt="" className="w-6 h-6" />
-                        <span>{currentLang?.label}</span>
-                      </button>
-
-                      {langDropdownOpen && (
-                          <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                            {languages.map((lang) => (
-                                <div
-                                    key={lang.code}
-                                    onClick={() => {
-                                      changeLanguage(lang.code);
-                                      setLangDropdownOpen(false);
-                                      setIsMobileMenuOpen(false);
-                                    }}
-                                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer"
-                                >
-                                  <img src={lang.flag} alt="" className="w-5 h-5" />
-                                  <span>{lang.label}</span>
-                                </div>
-                            ))}
-                          </div>
-                      )}
-                    </div>
-
-                    {/* Mobile Links */}
-                    <div className="flex flex-col items-center gap-8">
-                      {navLinks.map((link) => (
-                          <a
-                              key={link.name}
-                              href={link.href}
-                              onClick={(e) => handleNavClick(e, link.href)}
-                              className="text-3xl font-bold text-[#302c2b] hover:text-[#e54201] transition-colors"
-                          >
-                            {link.name}
-                          </a>
-                      ))}
-                    </div>
+                  {/* LINKS */}
+                  <div className="flex flex-col items-center gap-8 mt-10">
+                    {navLinks.map((link) => (
+                        <a
+                            key={link.name}
+                            href={link.href}
+                            onClick={(e) => handleNavClick(e, link)}
+                            className="text-2xl font-bold"
+                        >
+                          {link.name}
+                        </a>
+                    ))}
                   </div>
-
                 </div>
               </motion.div>
           )}

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
-
+import MainImage from "../images/24.jpeg";
 export function Hero() {
     const { t } = useTranslation();
 
@@ -21,8 +21,7 @@ export function Hero() {
                 <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[10s] scale-105"
                     style={{
-                        backgroundImage:
-                            "url('https://images.unsplash.com/photo-1769008301910-c69807d0c736?auto=format&fit=crop&q=80&w=1920')",
+                        backgroundImage: `url(${MainImage})`,
                     }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />

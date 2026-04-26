@@ -1,5 +1,9 @@
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
+import Material1 from "../images/50.jpeg";
+import Material2 from "../images/29.jpeg";
+import Material3 from "../images/30.jpeg";
+import Material4 from "../images/31.jpeg";
 
 export function Technologies() {
     const { t } = useTranslation();
@@ -8,25 +12,25 @@ export function Technologies() {
         {
             name: t("technologies.materials.premiumOak.name"),
             alt: t("technologies.materials.premiumOak.alt"),
-            image: "https://images.unsplash.com/photo-1758548157195-67d141468467?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: Material1,
             description: t("technologies.materials.premiumOak.description"),
         },
         {
             name: t("technologies.materials.walnutWood.name"),
             alt: t("technologies.materials.walnutWood.alt"),
-            image: "https://images.unsplash.com/photo-1737534884876-426964ba462a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: Material2,
             description: t("technologies.materials.walnutWood.description"),
         },
         {
             name: t("technologies.materials.cncTech.name"),
             alt: t("technologies.materials.cncTech.alt"),
-            image: "https://images.unsplash.com/photo-1590880795696-20c7dfadacde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: Material3,
             description: t("technologies.materials.cncTech.description"),
         },
         {
             name: t("technologies.materials.glassMetal.name"),
             alt: t("technologies.materials.glassMetal.alt"),
-            image: "https://images.unsplash.com/photo-1759803545394-041ea7b71989?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: Material4,
             description: t("technologies.materials.glassMetal.description"),
         },
     ];
