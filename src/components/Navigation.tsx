@@ -51,24 +51,47 @@ export function Navigation() {
   ) => {
     e.preventDefault();
 
-    // 🌐 ROUTE NAVIGATION
+    setIsMobileMenuOpen(false);
+
+    // 🌐 ROUTES (like /stones, /projects)
     if (link.type === "route") {
       navigate(link.href);
-      setIsMobileMenuOpen(false);
       return;
     }
 
-    // 📍 SCROLL NAVIGATION
-    const element = document.querySelector(link.href);
-    if (element) {
-      const offset = 84;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const offsetPosition = elementRect - bodyRect - offset;
+    // 📍 SCROLL LINKS (#about etc)
+    const scrollToSection = () => {
+      const element = document.querySelector(link.href);
 
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-      setIsMobileMenuOpen(false);
+      if (element) {
+        const offset = 84;
+
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = element.getBoundingClientRect().top;
+
+        const offsetPosition = elementRect - bodyRect - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+    };
+
+    // 🧠 IF NOT ON HOME → go home first
+    if (window.location.pathname !== "/") {
+      navigate("/");
+
+      // wait for home to render
+      setTimeout(() => {
+        scrollToSection();
+      }, 300);
+
+      return;
     }
+
+    // 🏠 already on home
+    scrollToSection();
   };
 
   useEffect(() => {
