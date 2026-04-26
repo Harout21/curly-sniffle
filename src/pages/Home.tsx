@@ -5,7 +5,6 @@ import {Technologies} from "../components/Technologies";
 import {Products} from "../components/Products";
 import {Projects} from "../components/Projects";
 import {Contact} from "../components/Contact";
-import {Footer} from "../components/Footer";
 import {PriceCalculator} from "../components/PriceCalculator";
 import SEO from "../components/Seo";
 
@@ -13,7 +12,6 @@ import SEO from "../components/Seo";
 export default function Home() {
     return (
         <>
-
             <SEO page="home" />
             <div className="min-h-screen">
                 <Hero/>
@@ -24,7 +22,6 @@ export default function Home() {
                 <Products/>
                 <Projects/>
                 <Contact/>
-                <Footer/>
             </div>
         </>
     );

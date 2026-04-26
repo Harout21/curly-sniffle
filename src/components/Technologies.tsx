@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-import Material1 from "../images/50.jpeg";
+import Material1 from "../images/14.jpeg";
 import Material2 from "../images/29.jpeg";
 import Material3 from "../images/30.jpeg";
 import Material4 from "../images/31.jpeg";

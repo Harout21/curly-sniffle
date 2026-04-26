@@ -1,42 +1,48 @@
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
+import product1 from "../images/4.jpeg";
+import product2 from "../images/3.jpeg";
+import product3 from "../images/30.jpeg";
+import product4 from "../images/53.jpeg";
+import product5 from "../images/25.jpeg";
+import product6 from "../images/12.jpeg";
 
 const products = [
   {
     key: "interiorDoors",
     categoryKey: "doors",
     altKey: "interiorDoorsAlt",
-    image: "https://images.unsplash.com/photo-1759262151001-b9cfec26a9d5?auto=format&fit=crop&q=80&w=1080",
+    image: product1,
   },
   {
     key: "modernFurniture",
     categoryKey: "furniture",
     altKey: "modernFurnitureAlt",
-    image: "https://images.unsplash.com/photo-1763565909003-46e9dfb68a00?auto=format&fit=crop&q=80&w=1080",
+    image: product2,
   },
   {
     key: "kitchenCabinets",
     categoryKey: "furniture",
     altKey: "kitchenCabinetsAlt",
-    image: "https://images.unsplash.com/photo-1758548157243-f4ef3e614684?auto=format&fit=crop&q=80&w=1080",
+    image: product3,
   },
   {
     key: "entranceDoors",
     categoryKey: "doors",
     altKey: "entranceDoorsAlt",
-    image: "https://images.unsplash.com/photo-1769008301910-c69807d0c736?auto=format&fit=crop&q=80&w=1080",
+    image: product4,
   },
   {
     key: "customWardrobes",
     categoryKey: "furniture",
     altKey: "customWardrobesAlt",
-    image: "https://images.unsplash.com/photo-1750420556288-d0e32a6f517b?auto=format&fit=crop&q=80&w=1080",
+    image: product5,
   },
   {
     key: "glassDoors",
     categoryKey: "doors",
     altKey: "glassDoorsAlt",
-    image: "https://images.unsplash.com/photo-1759803545394-041ea7b71989?auto=format&fit=crop&q=80&w=1080",
+    image: product6,
   },
 ];
 

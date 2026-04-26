@@ -35,7 +35,7 @@ export function Navigation() {
     { name: t("nav.contact"), href: "#contact", type: "scroll" },
 
     // 🌐 ROUTE LINK (NEW)
-    { name: "Stones", href: "/stones", type: "route" },
+    { name: t("stones"), href: "/stones", type: "route" },
   ];
 
   const changeLanguage = (lng: string) => {
