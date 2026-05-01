@@ -8,10 +8,9 @@ export default function RootLayout() {
         <div className="flex flex-col min-h-screen">
             <Navigation />
             <ScrollToTop />
-            <main className="flex-1 pt-[96px]">
+            <main className="flex-1 pt-10">
                 <Outlet />
             </main>
-
             <Footer />
         </div>
     );
