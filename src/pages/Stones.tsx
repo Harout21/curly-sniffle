@@ -12,7 +12,11 @@ export default function Stones() {
     return (
         <>
             <SEO page="stones"/>
-            <div className="max-w-7xl mx-auto px-4 md:px-6 pt-28 pb-24">
+            {/*
+                pt-14: Mobile top padding
+                md:pt-28: Desktop top padding (restored original)
+            */}
+            <div className="max-w-7xl mx-auto px-4 md:px-6 pt-14 md:pt-28 pb-24">
 
                 {/* HEADER */}
                 <div className="mb-12">
@@ -27,9 +31,6 @@ export default function Stones() {
                     {stones.map((stone) => {
 
                         // LANGUAGE LOGIC
-                        // 1. If Russian -> name_ru
-                        // 2. If Armenian -> name_ru + name_en
-                        // 3. Default (English) -> name_en
                         const displayName = currentLang.startsWith('ru')
                             ? stone.name_ru
                             : currentLang.startsWith('hy')

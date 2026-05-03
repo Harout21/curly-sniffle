@@ -22,7 +22,7 @@ export default function ProjectDetails() {
         <>
             <SEO page="projects.details" />
 
-            <div className="max-w-6xl mx-auto px-6 pt-16 md:pt-24 pb-16">
+            <div className="max-w-6xl mx-auto px-6  pt-18 md:pt-24 pb-16">
 
                 {/* IMAGE CONTAINER */}
                 <div className="rounded-2xl overflow-hidden shadow-xl mb-10 w-full bg-gray-50">

@@ -33,7 +33,7 @@ export default function StoneDetails() {
     return (
         <>
             <SEO page="stones.details"/>
-            <div className="max-w-7xl mx-auto px-4 md:px-6 pt-28 pb-10 md:pt-36 md:pb-20">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 pt-14 pb-10 md:pt-36 md:pb-20">
 
                 {/* HEADER */}
                 <div className="mb-10 border-b border-gray-100 pb-6">

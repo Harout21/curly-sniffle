@@ -9,7 +9,7 @@ export default function Projects() {
     return (
         <>
             <SEO page="projects" />
-            <div className="max-w-7xl mx-auto px-6 pt-28 pb-20">
+            <div className="max-w-7xl mx-auto px-6 pt-14 md:pt-28 pb-20">
 
                 {/* HEADER WITH DIVIDER */}
                 <div className="mb-12">
