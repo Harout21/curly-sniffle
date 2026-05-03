@@ -1,33 +1,74 @@
-/* Keep your imports */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+/* 1. Imports */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;500;600;700&family=PT+Sans:wght@400;700&display=swap');
 
-/* Font variables */
+/* 2. Variables */
 :root {
     --font-serif: 'Cormorant Garamond', serif;
     --font-sans: 'Inter', sans-serif;
-    --font-armenian: 'Noto Sans Armenian', sans-serif; /* optional custom font for Armenian */
-    --font-russian: 'PT Sans', sans-serif; /* optional custom font for Russian */
+    --font-armenian: 'Noto Sans Armenian', sans-serif;
+    --font-russian: 'PT Sans', sans-serif;
+
+    /* Standard base size */
+    --base-size: 16px;
 }
 
-/* Default */
+/* 3. Base Reset */
+html {
+    font-size: var(--base-size);
+}
+
 body {
-    font-family: var(--font-armenian);
-}
-
-body.font-en, body.font-hy, body.font-ru {
+    margin: 0;
+    padding: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Default to Armenian as your primary */
+    font-family: var(--font-armenian);
+    line-height: 1.5;
 }
 
-/* Language-specific body fonts */
+/* 4. Language-Specific Scaling & Logic */
+
+/* English: Serif fonts look smaller, so we bump the size and weight */
 body.font-en {
     font-family: var(--font-serif);
+    font-size: 1.15rem; /* Optical increase to match Noto Sans height */
+    letter-spacing: 0.01em;
 }
 
+/* Armenian: Sans-serif is naturally "chunky" and readable */
 body.font-hy {
     font-family: var(--font-armenian);
+    font-size: 1rem;
+    letter-spacing: normal;
 }
 
 body.font-ru {
     font-family: var(--font-russian);
+    font-size: 1rem;
+    letter-spacing: normal;
+}
+
+/* 5. Component Overrides (Optional) */
+
+/* If your nav links still feel small in English */
+body.font-en nav a {
+    font-weight: 600; /* Extra weight makes the thin serif lines more visible */
+    font-size: 0.95rem;
+}
+
+body.font-hy nav a,
+body.font-ru nav a {
+    font-weight: 700;
+    font-size: 0.85rem; /* Smaller because sans-serif is "loud" */
+}
+
+/* 6. Fix for Headings */
+h1, h2, h3, h4 {
+    line-height: 1.2;
+}
+
+body.font-en h1,
+body.font-en h2 {
+    font-weight: 700;
 }

@@ -21,15 +21,13 @@ interface NavLink {
 }
 
 const languages = [
-  { code: "en", label: "English", flag: FLAG_US },
-  { code: "hy", label: "Հայերեն", flag: FLAG_AM },
-  { code: "ru", label: "Русский", flag: FLAG_RU },
+  { code: "en", label: "EN", fullLabel: "English", flag: FLAG_US },
+  { code: "hy", label: "HY", fullLabel: "Հայերեն", flag: FLAG_AM },
+  { code: "ru", label: "RU", fullLabel: "Русский", flag: FLAG_RU },
 ];
 
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
-
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,14 +43,12 @@ export function Navigation() {
     { id: "projects-all", name: t("projects-all"), href: "/projects", type: "route" }
   ], [t]);
 
-  const currentLang = languages.find((l) => l.code === i18n.language) || languages[0];
-
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     localStorage.setItem("lang", lng);
+    document.documentElement.lang = lng;
     document.body.classList.remove("font-en", "font-hy", "font-ru");
     document.body.classList.add(`font-${lng}`);
-    setLangDropdownOpen(false);
   };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: NavLink) => {
@@ -102,18 +98,15 @@ export function Navigation() {
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    if (location.pathname !== "/") {
-                      navigate("/");
-                    } else {
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }
+                    if (location.pathname !== "/") navigate("/");
+                    else window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                   className="flex items-center gap-2 transition-transform hover:scale-105"
               >
                 <img src={MAIN_LOGO} alt="Logo" className="h-12 xl:h-20 w-auto" />
               </a>
 
-              {/* DESKTOP MENU - Visible ONLY above 1200px (using xl breakpoint) */}
+              {/* DESKTOP MENU */}
               <div className="hidden xl:flex items-center gap-8">
                 {navLinks.map((link) => (
                     <a
@@ -126,41 +119,25 @@ export function Navigation() {
                     </a>
                 ))}
 
-                {/* LANGUAGE DROPDOWN */}
-                <div className="relative">
-                  <button
-                      onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                      className="flex items-center gap-2 border px-2 py-1 rounded-md hover:bg-gray-50 transition-colors"
-                  >
-                    <img src={currentLang.flag} className="w-5 h-5 object-cover rounded-sm" alt="" />
-                    <span className="text-sm font-medium">{currentLang.label}</span>
-                  </button>
-
-                  <AnimatePresence>
-                    {langDropdownOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            className="absolute right-0 mt-2 w-36 bg-white border rounded-md shadow-lg py-1"
-                        >
-                          {languages.map((lang) => (
-                              <button
-                                  key={lang.code}
-                                  onClick={() => changeLanguage(lang.code)}
-                                  className="flex items-center w-full gap-2 px-3 py-2 hover:bg-gray-100 cursor-pointer text-left transition-colors"
-                              >
-                                <img src={lang.flag} className="w-5 h-5 object-cover rounded-sm" alt="" />
-                                <span className="text-sm">{lang.label}</span>
-                              </button>
-                          ))}
-                        </motion.div>
-                    )}
-                  </AnimatePresence>
+                {/* ULTRA COMPACT DESKTOP TOGGLE */}
+                <div className="flex items-center bg-gray-50 p-0.5 rounded-full border border-gray-200/50">
+                  {languages.map((lang) => (
+                      <button
+                          key={lang.code}
+                          onClick={() => changeLanguage(lang.code)}
+                          className={`px-2 py-0.5 rounded-full text-[10px] cursor-pointer font-black transition-all ${
+                              i18n.language === lang.code
+                                  ? "bg-white text-[#e54201] shadow-[0_1px_3px_rgba(0,0,0,0.1)]"
+                                  : "text-gray-400 hover:text-gray-600"
+                          }`}
+                      >
+                        {lang.label}
+                      </button>
+                  ))}
                 </div>
               </div>
 
-              {/* MOBILE/TABLET BUTTON - Visible up to 1200px */}
+              {/* MOBILE BUTTON */}
               <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                   className="xl:hidden p-2 text-[#302c2b]"
@@ -171,7 +148,7 @@ export function Navigation() {
           </div>
         </motion.nav>
 
-        {/* MOBILE/TABLET MENU DRAWER */}
+        {/* MOBILE DRAWER */}
         <AnimatePresence>
           {isMobileMenuOpen && (
               <motion.div
@@ -201,10 +178,9 @@ export function Navigation() {
                         </a>
                     ))}
 
-                    {/* Language selection inside drawer for Tablet/Mobile */}
-                    <div className="mt-8 pt-8 border-t w-full">
-                      <p className="text-center text-gray-400 uppercase text-xs tracking-widest mb-4">Select Language</p>
-                      <div className="flex flex-wrap justify-center gap-4">
+                    {/* ULTRA COMPACT MOBILE SELECTOR (Horizontal Row) */}
+                    <div className="mt-4 pt-8 border-t w-full px-4">
+                      <div className="flex justify-center gap-2">
                         {languages.map((lang) => (
                             <button
                                 key={lang.code}
@@ -212,12 +188,14 @@ export function Navigation() {
                                   changeLanguage(lang.code);
                                   setIsMobileMenuOpen(false);
                                 }}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm transition-all ${
-                                    i18n.language === lang.code ? 'bg-[#e54201] text-white border-[#e54201]' : 'bg-white text-[#302c2b]'
+                                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${
+                                    i18n.language === lang.code
+                                        ? "bg-[#302c2b] border-[#302c2b] text-white"
+                                        : "bg-white border-gray-200 text-gray-500"
                                 }`}
                             >
-                              <img src={lang.flag} className="w-6 h-6 rounded-full border border-gray-200" alt="" />
-                              <span className="font-bold">{lang.label}</span>
+                              <img src={lang.flag} className="w-3.5 h-3.5 rounded-full object-cover" alt="" />
+                              <span className="font-bold text-[11px]">{lang.fullLabel}</span>
                             </button>
                         ))}
                       </div>
