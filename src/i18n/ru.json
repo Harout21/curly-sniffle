@@ -217,5 +217,7 @@
     }
   },
   "stones": "Камни",
-  "projects-all": "Проекты"
+  "projects-all": "Проекты",
+  "previous": "Назад",
+  "next": "Вперед"
 }

@@ -92,11 +92,11 @@ export function Footer() {
               {t('footer.bottomBar', { year: currentYear })}
             </div>
 
-            <div className="flex gap-8 order-1 md:order-2">
-              <a href="/privacy" className="hover:text-white transition-colors">{t('footer.privacyPolicy')}</a>
-              <a href="/terms" className="hover:text-white transition-colors">{t('footer.terms')}</a>
-              <a href="/sitemap.xml" className="hover:text-white transition-colors hidden md:block">{t('footer.sitemap')}</a>
-            </div>
+            {/*<div className="flex gap-8 order-1 md:order-2">*/}
+            {/*  <a href="/privacy" className="hover:text-white transition-colors">{t('footer.privacyPolicy')}</a>*/}
+            {/*  <a href="/terms" className="hover:text-white transition-colors">{t('footer.terms')}</a>*/}
+            {/*  <a href="/sitemap.xml" className="hover:text-white transition-colors hidden md:block">{t('footer.sitemap')}</a>*/}
+            {/*</div>*/}
           </div>
         </div>
       </footer>

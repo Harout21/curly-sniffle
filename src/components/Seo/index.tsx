@@ -1,21 +1,22 @@
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 
-export default function SEO({ page = "home" }) {
+export default function SEO({ page, titleOverride, descriptionOverride }) {
     const { t } = useTranslation();
+
+    // If titleOverride exists (for single pages), use it.
+    // Otherwise, fallback to the translation file keys.
+    const seoTitle = titleOverride || t(`seo.${page}.title`);
+    const seoDescription = descriptionOverride || t(`seo.${page}.description`);
 
     return (
         <Helmet>
-            {/* Title */}
-            <title>{t(`seo.${page}.title`)}</title>
+            <title>{seoTitle}</title>
+            <meta name="description" content={seoDescription} />
 
-            {/* Description */}
-            <meta name="description" content={t(`seo.${page}.description`)} />
-
-            {/* Open Graph */}
-            <meta property="og:title" content={t(`seo.${page}.title`)} />
-            <meta property="og:description" content={t(`seo.${page}.description`)} />
-            <meta property="og:type" content="website" />
+            {/* OG Tags for Social Media sharing */}
+            <meta property="og:title" content={seoTitle} />
+            <meta property="og:description" content={seoDescription} />
         </Helmet>
     );
 }

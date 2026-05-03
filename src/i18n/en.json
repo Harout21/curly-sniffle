@@ -217,5 +217,7 @@
     }
   },
   "stones": "Stones",
-  "projects-all": "Projects"
+  "projects-all": "Projects",
+  "previous": "Previous",
+  "next": "Next"
 }
