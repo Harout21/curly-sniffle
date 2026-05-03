@@ -28,7 +28,7 @@ export function Contact() {
     // Replace these strings with your actual EmailJS credentials
     const SERVICE_ID = "service_px4m7x9";
     const TEMPLATE_ID = "template_z5nyyq8";
-    const PUBLIC_KEY = "WNRULdeyYTGzzKj2l";
+    const PUBLIC_KEY = "wmndhRfQj70UgRE39";
 
     // templateParams should match the variable names in your EmailJS Template (e.g., {{user_name}})
     const templateParams = {
