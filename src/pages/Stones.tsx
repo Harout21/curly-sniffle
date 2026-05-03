@@ -12,7 +12,6 @@ export default function Stones() {
     return (
         <>
             <SEO page="stones"/>
-            /* Added pt-28 pb-24 to ensure the grid doesn't hide under a sticky header */
             <div className="max-w-7xl mx-auto px-4 md:px-6 pt-28 pb-24">
 
                 {/* HEADER */}
