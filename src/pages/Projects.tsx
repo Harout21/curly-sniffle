@@ -1,23 +1,38 @@
 import { Link } from "react-router-dom";
 import { projects } from "../data/projectsData";
-import {t} from "i18next";
+import { useTranslation } from "react-i18next";
 
 export default function Projects() {
-    return (
-        <div className="max-w-7xl mx-auto px-6 py-20">
-            <h1 className="text-3xl font-bold mb-10">{t("projects-all")}</h1>
+    const { t } = useTranslation();
 
+    return (
+        /* Added pt-28 to clear the header and pb-20 for bottom spacing */
+        <div className="max-w-7xl mx-auto px-6 pt-28 pb-20">
+
+            {/* HEADER WITH DIVIDER */}
+            <div className="mb-12">
+                <h1 className="text-3xl md:text-4xl font-bold text-[#302c2b]">
+                    {t("projects-all")}
+                </h1>
+                {/* The Orange Divider */}
+                <div className="w-20 h-1 bg-[#e54201] mt-4"></div>
+            </div>
+
+            {/* GRID */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {projects.map((p) => (
                     <Link
                         key={p.id}
                         to={`/projects/${p.id}`}
-                        className="overflow-hidden rounded-lg"
+                        className="group overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all"
                     >
-                        <img
-                            src={p.image}
-                            className="w-full h-48 object-cover hover:scale-105 transition"
-                        />
+                        <div className="overflow-hidden">
+                            <img
+                                src={p.image}
+                                alt={p.title || "Project"}
+                                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                        </div>
                     </Link>
                 ))}
             </div>
