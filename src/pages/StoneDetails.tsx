@@ -33,7 +33,6 @@ export default function StoneDetails() {
     return (
         <>
             <SEO page="stones.details"/>
-            /* Added pt-28 to ensure it clears the header/navbar */
             <div className="max-w-7xl mx-auto px-4 md:px-6 pt-28 pb-10 md:pt-36 md:pb-20">
 
                 {/* HEADER */}

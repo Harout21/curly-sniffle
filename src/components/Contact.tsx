@@ -1,13 +1,16 @@
 import { motion } from "motion/react";
-import { useState } from "react";
-import { Phone, Mail, MapPin, Send } from "lucide-react";
+import { useState, useRef } from "react"; // Added useRef
+import { Phone, Mail, MapPin, Send, Loader2 } from "lucide-react"; // Added Loader2 for loading state
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useTranslation } from "react-i18next";
+import emailjs from "@emailjs/browser"; // Import EmailJS
 
 export function Contact() {
   const { t } = useTranslation();
+  const form = useRef<HTMLFormElement>(null); // Ref to safely target the form
+  const [isSending, setIsSending] = useState(false); // Loading state
 
   const [formData, setFormData] = useState({
     name: "",
@@ -20,16 +23,46 @@ export function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(t("contact.alertMessage"));
+    setIsSending(true);
 
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      projectType: "",
-      message: "",
-    });
+    // Replace these strings with your actual EmailJS credentials
+    const SERVICE_ID = "service_px4m7x9";
+    const TEMPLATE_ID = "template_z5nyyq8";
+    const PUBLIC_KEY = "WNRULdeyYTGzzKj2l";
+
+    // templateParams should match the variable names in your EmailJS Template (e.g., {{user_name}})
+    const templateParams = {
+      user_name: formData.name,
+      user_email: formData.email,
+      user_phone: formData.phone,
+      user_company: formData.company,
+      project_type: formData.projectType,
+      message: formData.message,
+      to_email: "support@bestproject.am",
+    };
+
+    emailjs
+        .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+        .then(
+            () => {
+              alert(t("contact.alertMessage"));
+              setFormData({
+                name: "",
+                email: "",
+                phone: "",
+                company: "",
+                projectType: "",
+                message: "",
+              });
+            },
+            (error) => {
+              console.error("FAILED...", error);
+              alert("Failed to send message. Please try again later.");
+            }
+        )
+        .finally(() => {
+          setIsSending(false);
+        });
   };
 
   const handleChange = (
@@ -45,7 +78,6 @@ export function Contact() {
           aria-labelledby="contact-heading"
       >
         <div className="max-w-7xl mx-auto w-full">
-
           {/* Header */}
           <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -67,7 +99,6 @@ export function Contact() {
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12 w-full max-w-full">
-
             {/* Contact Info */}
             <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -81,7 +112,6 @@ export function Contact() {
               </h3>
 
               <address className="not-italic space-y-6 mb-12">
-
                 {/* Phone */}
                 <a
                     href="tel:+37410123456"
@@ -104,7 +134,7 @@ export function Contact() {
 
                 {/* Email */}
                 <a
-                    href="mailto:info@doorandmore.am"
+                    href="mailto:support@bestproject.am"
                     className="flex items-start gap-4 group cursor-pointer w-full max-w-full"
                 >
                   <div className="w-12 h-12 flex-shrink-0 rounded-full flex items-center justify-center bg-white shadow-sm text-[#e54201] group-hover:bg-[#e54201] group-hover:text-white transition-all">
@@ -117,7 +147,7 @@ export function Contact() {
                     </div>
 
                     <div className="text-lg text-[#1a1a1a] font-medium break-words">
-                      info@doorandmore.am
+                      support@bestproject.am
                     </div>
                   </div>
                 </a>
@@ -161,8 +191,7 @@ export function Contact() {
                 viewport={{ once: true }}
                 className="bg-white p-6 md:p-10 lg:p-12 rounded-2xl shadow-xl shadow-black/5 w-full max-w-full overflow-hidden lg:min-h-[600px]"
             >
-              <form onSubmit={handleSubmit} className="space-y-5">
-
+              <form ref={form} onSubmit={handleSubmit} className="space-y-5">
                 {/* Name */}
                 <div className="grid gap-2">
                   <label className="text-sm font-bold text-gray-700">
@@ -214,7 +243,6 @@ export function Contact() {
 
                 {/* Company + Project */}
                 <div className="grid md:grid-cols-2 gap-4">
-
                   <div className="grid gap-2">
                     <label className="text-sm font-bold text-gray-700">
                       {t("contact.companyLabel")}
@@ -242,7 +270,6 @@ export function Contact() {
                         className="w-full bg-gray-50 border-gray-200"
                     />
                   </div>
-
                 </div>
 
                 {/* Message */}
@@ -264,15 +291,20 @@ export function Contact() {
 
                 <Button
                     type="submit"
-                    className="w-full h-14 text-lg font-bold text-white bg-[#e54201] hover:bg-[#ff4b02] shadow-lg shadow-[#e54201]/20 transition-all active:scale-95"
+                    disabled={isSending}
+                    className="w-full h-14 text-lg font-bold text-white bg-[#e54201] hover:bg-[#ff4b02] shadow-lg shadow-[#e54201]/20 transition-all active:scale-95 disabled:opacity-70"
                 >
-                  {t("contact.requestConsultation")}
-                  <Send className="ml-2 h-5 w-5" />
+                  {isSending ? (
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  ) : (
+                      <>
+                        {t("contact.requestConsultation")}
+                        <Send className="ml-2 h-5 w-5" />
+                      </>
+                  )}
                 </Button>
-
               </form>
             </motion.div>
-
           </div>
         </div>
       </section>
