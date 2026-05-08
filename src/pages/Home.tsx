@@ -7,6 +7,7 @@ import {Projects} from "../components/Projects";
 import {Contact} from "../components/Contact";
 import {PriceCalculator} from "../components/PriceCalculator";
 import SEO from "../components/Seo";
+import {BrandCarousel} from "../components/BrandCarousel";
 
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
                 <ProductionProcess/>
                 <PriceCalculator/>
                 <Technologies/>
+                <BrandCarousel />
                 <Products/>
                 <Projects/>
                 <Contact/>

@@ -4,3 +4,22 @@
 html {
   scroll-behavior: smooth;
 }
+
+.animate-scroll-left {
+  /* Adjusted time to 20s for a smoother feel with 20 logos */
+  animation: scroll-left 20s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.3333%);
+  }
+}
+
+/* Optional: Pause on hover so people can actually click the logos */
+.pause-hover:hover .animate-scroll-left {
+  animation-play-state: paused;
+}
