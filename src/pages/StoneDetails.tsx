@@ -10,6 +10,9 @@ export default function StoneDetails() {
     const stone = stones.find((s) => s.id.toString() === id);
     const [activeImage, setActiveImage] = useState(0);
 
+    // State to handle the Pop-up Modal visibility
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     if (!stone) {
         return (
             <div className="min-h-screen flex items-center justify-center text-lg">
@@ -18,23 +21,19 @@ export default function StoneDetails() {
         );
     }
 
-    // Language Logic
     const currentLang = i18n.language;
     const isRu = currentLang.startsWith('ru');
     const isHy = currentLang.startsWith('hy');
 
-    // Get correct name string
     let displayName = stone.name_en;
     if (isRu) displayName = stone.name_ru;
     if (isHy) displayName = stone.name_hy || stone.name_en;
 
-    // DYNAMIC SEO STRINGS
     const dynamicTitle = t("seo.stones.details.title", { stone: displayName });
     const dynamicDescription = t("seo.stones.details.description", { stone: displayName });
 
     return (
         <>
-            {/* SEO Component receiving dynamic overrides */}
             <SEO
                 page="stones.details"
                 titleOverride={dynamicTitle}
@@ -84,7 +83,7 @@ export default function StoneDetails() {
                                 {t("description")}
                             </p>
                             <p className="text-gray-700 leading-relaxed">
-                                 {displayName}
+                                {t("high_quality")} {displayName} {t("stone_desc_suffix")}
                             </p>
                         </div>
 
@@ -104,12 +103,52 @@ export default function StoneDetails() {
                             </div>
                         </div>
 
-                        <button className="w-full border-2 border-[#e54201] text-[#e54201] py-3 rounded-lg font-semibold hover:bg-[#e54201] hover:text-white transition uppercase">
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="w-full border-2 border-[#e54201] text-[#e54201] py-3 rounded-lg font-semibold hover:bg-[#e54201] hover:text-white transition uppercase"
+                        >
                             {t("request_measurement")}
                         </button>
                     </div>
                 </div>
             </div>
+
+            {/* POP-UP MODAL WITH PITCH BLACK HIGH-OPACITY BACKDROP */}
+            {isModalOpen && (
+                <div
+                    onClick={() => setIsModalOpen(false)} // Closes modal when clicking outside
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs transition-all cursor-pointer"
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside the card
+                        className="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl relative border border-gray-100 animate-in fade-in zoom-in-95 duration-200 cursor-default"
+                    >
+
+                        <h3 className="text-xl font-bold text-[#302c2b] mb-2">
+                            {t("modal.title")}
+                        </h3>
+
+                        <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                            {t("modal.description")}
+                        </p>
+
+                        {/* Direct Click-to-Call Link */}
+                        <a
+                            href="tel:+374 77 44 45 96"
+                            className="block w-full bg-[#e54201] text-white py-3 rounded-xl font-bold text-lg hover:bg-[#c83a00] transition shadow-md mb-3"
+                        >
+                            +374 77 44 45 96
+                        </a>
+
+                        <button
+                            onClick={() => setIsModalOpen(false)}
+                            className="w-full py-2 text-sm text-gray-400 hover:text-gray-600 font-medium transition"
+                        >
+                            {t("modal.close")}
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

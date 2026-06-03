@@ -239,6 +239,11 @@
       }
     }
   },
+  "modal": {
+    "title": "Request Measurement",
+    "description": "To schedule a free measurement appointment, please call our master directly:",
+    "close": "Close Window"
+  },
   "stones": "Stones",
   "projects-all": "Projects",
   "previous": "Previous",
