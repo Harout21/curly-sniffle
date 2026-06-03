@@ -3,6 +3,7 @@ import { Calculator, Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 type Material = 'mdf' | 'solid-wood' | 'premium';
+type FurnitureStyle = 'rectangle' | 'v-shape' | 'u-shape';
 
 interface Addon {
     id: string;
@@ -31,9 +32,17 @@ export function PriceCalculator() {
         premium: t('calculator.materials.premium'),
     };
 
+    // States
+    const [style, setStyle] = useState<FurnitureStyle>('rectangle');
     const [material, setMaterial] = useState<Material>('solid-wood');
-    const [width, setWidth] = useState<number>(120);
     const [height, setHeight] = useState<number>(200);
+
+    // Dimension States
+    const [width, setWidth] = useState<number>(120);       // Used for Rectangle Main Width & V-Shape Base
+    const [sideWidthA, setSideWidthA] = useState<number>(60); // Used for U-Shape Left Wing
+    const [sideWidthB, setSideWidthB] = useState<number>(120); // Used for U-Shape Back Wall
+    const [sideWidthC, setSideWidthC] = useState<number>(60); // Used for U-Shape Right Wing
+
     const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
 
     const toggleAddon = (addonId: string) => {
@@ -44,9 +53,27 @@ export function PriceCalculator() {
         );
     };
 
-    // Calculate total
+    // Dynamic Area Calculation (outputting in m²)
+    const calculateArea = (): number => {
+        switch (style) {
+            case 'v-shape':
+                // Triangle formula: (Base * Height) / 2
+                return (width * height) / 2 / 10000;
+
+            case 'u-shape':
+                // Combined area of 3 structural walls sharing the same height
+                const totalUWidth = sideWidthA + sideWidthB + sideWidthC;
+                return (totalUWidth * height) / 10000;
+
+            case 'rectangle':
+            default:
+                // Standard bounding box: Width * Height
+                return (width * height) / 10000;
+        }
+    };
+
     const basePrice = materialPrices[material];
-    const area = (width * height) / 10000; // m²
+    const area = calculateArea();
     const materialCost = basePrice * area;
     const addonsCost = selectedAddons.reduce((sum, addonId) => {
         const addon = addons.find((a) => a.id === addonId);
@@ -62,25 +89,39 @@ export function PriceCalculator() {
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#f5f5f5] mb-4">
                         <Calculator className="text-[#e54201]" size={28} aria-hidden="true" />
                     </div>
-
                     <h2 id="calc-heading" className="text-4xl md:text-5xl text-[#302c2b] mb-4 font-semibold">
-                        {t('calculator.heading')}
+                        {t('calculator.heading', 'Custom Furniture Calculator')}
                     </h2>
-
                     <p className="text-lg text-gray-600">
-                        {t('calculator.description')}
+                        {t('calculator.description', 'Select your build layout, sizing configurations, and premium additions.')}
                     </p>
                 </div>
 
                 <div className="bg-[#f5f5f5] rounded-lg p-8">
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
 
+                        {/* Style Selector */}
+                        <div>
+                            <label htmlFor="style-select" className="block text-[#302c2b] mb-3 font-medium">
+                                {t('calculator.selectStyle', 'Furniture Layout Style')}
+                            </label>
+                            <select
+                                id="style-select"
+                                value={style}
+                                onChange={(e) => setStyle(e.target.value as FurnitureStyle)}
+                                className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
+                            >
+                                <option value="rectangle">{t('calculator.styles.rectangle', 'Square / Rectangle')}</option>
+                                <option value="v-shape">{t('calculator.styles.vshape', 'V-Shape / Triangle')}</option>
+                                <option value="u-shape">{t('calculator.styles.ushape', 'U-Shape Structure')}</option>
+                            </select>
+                        </div>
+
+                        {/* Material Selector */}
                         <div>
                             <label htmlFor="material-select" className="block text-[#302c2b] mb-3 font-medium">
                                 {t('calculator.selectMaterial')}
                             </label>
-
                             <select
                                 id="material-select"
                                 value={material}
@@ -95,27 +136,71 @@ export function PriceCalculator() {
                             </select>
                         </div>
 
-                        <div>
-                            <label htmlFor="width-input" className="block text-[#302c2b] mb-3 font-medium">
-                                {t('calculator.width')}
-                            </label>
+                        {/* Condition-based Inputs depending on Style */}
+                        {style !== 'u-shape' ? (
+                            <div>
+                                <label htmlFor="width-input" className="block text-[#302c2b] mb-3 font-medium">
+                                    {style === 'v-shape' ? t('calculator.baseWidth', 'Base Width (cm)') : t('calculator.width')}
+                                </label>
+                                <input
+                                    id="width-input"
+                                    type="number"
+                                    value={width}
+                                    onChange={(e) => setWidth(Number(e.target.value))}
+                                    min={50}
+                                    max={500}
+                                    className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
+                                />
+                            </div>
+                        ) : (
+                            <>
+                                <div>
+                                    <label htmlFor="u-left-input" className="block text-[#302c2b] mb-3 font-medium">
+                                        {t('calculator.uLeft', 'Left Wing Depth (cm)')}
+                                    </label>
+                                    <input
+                                        id="u-left-input"
+                                        type="number"
+                                        value={sideWidthA}
+                                        onChange={(e) => setSideWidthA(Number(e.target.value))}
+                                        min={30}
+                                        className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="u-back-input" className="block text-[#302c2b] mb-3 font-medium">
+                                        {t('calculator.uBack', 'Back Wall Width (cm)')}
+                                    </label>
+                                    <input
+                                        id="u-back-input"
+                                        type="number"
+                                        value={sideWidthB}
+                                        onChange={(e) => setSideWidthB(Number(e.target.value))}
+                                        min={50}
+                                        className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="u-right-input" className="block text-[#302c2b] mb-3 font-medium">
+                                        {t('calculator.uRight', 'Right Wing Depth (cm)')}
+                                    </label>
+                                    <input
+                                        id="u-right-input"
+                                        type="number"
+                                        value={sideWidthC}
+                                        onChange={(e) => setSideWidthC(Number(e.target.value))}
+                                        min={30}
+                                        className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
+                                    />
+                                </div>
+                            </>
+                        )}
 
-                            <input
-                                id="width-input"
-                                type="number"
-                                value={width}
-                                onChange={(e) => setWidth(Number(e.target.value))}
-                                min={50}
-                                max={500}
-                                className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
-                            />
-                        </div>
-
+                        {/* Unified Height Field */}
                         <div>
                             <label htmlFor="height-input" className="block text-[#302c2b] mb-3 font-medium">
                                 {t('calculator.height')}
                             </label>
-
                             <input
                                 id="height-input"
                                 type="number"
@@ -128,11 +213,11 @@ export function PriceCalculator() {
                         </div>
                     </div>
 
+                    {/* Features checklist */}
                     <fieldset className="mb-8">
                         <legend className="block text-[#302c2b] mb-4 font-medium">
                             {t('calculator.additionalFeatures')}
                         </legend>
-
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             {addons.map((addon) => (
                                 <button
@@ -147,34 +232,27 @@ export function PriceCalculator() {
                                     }`}
                                 >
                                     <div className="flex items-start justify-between mb-2">
-                                        <span className="text-[#302c2b] font-medium">
-                                            {addon.label}
-                                        </span>
-
+                                        <span className="text-[#302c2b] font-medium">{addon.label}</span>
                                         {selectedAddons.includes(addon.id) && (
                                             <Check className="text-[#e54201]" size={20} aria-hidden="true" />
                                         )}
                                     </div>
-
-                                    <span className="text-gray-600 text-sm">
-                                        +${addon.price}
-                                    </span>
+                                    <span className="text-gray-600 text-sm">+${addon.price}</span>
                                 </button>
                             ))}
                         </div>
                     </fieldset>
 
+                    {/* Total Price breakdown block */}
                     <article className="bg-white rounded-lg p-6 mb-6" aria-label={t('calculator.priceSummary')}>
                         <h3 className="text-xl text-[#302c2b] mb-4 font-semibold">
                             {t('calculator.priceBreakdown')}
                         </h3>
-
                         <div className="space-y-2 mb-4">
                             <div className="flex justify-between text-gray-600">
                                 <span>{t('calculator.materialCost', { area: area.toFixed(2) })}</span>
                                 <span>${Math.round(materialCost)}</span>
                             </div>
-
                             {selectedAddons.map((addonId) => {
                                 const addon = addons.find((a) => a.id === addonId);
                                 return addon ? (
@@ -185,16 +263,10 @@ export function PriceCalculator() {
                                 ) : null;
                             })}
                         </div>
-
                         <div className="border-t border-gray-200 pt-4">
                             <div className="flex justify-between items-center">
-                                <span className="text-2xl text-[#302c2b] font-bold">
-                                    {t('calculator.totalEstimate')}
-                                </span>
-
-                                <span className="text-3xl text-[#e54201] font-bold">
-                                    ${totalPrice}
-                                </span>
+                                <span className="text-2xl text-[#302c2b] font-bold">{t('calculator.totalEstimate')}</span>
+                                <span className="text-3xl text-[#e54201] font-bold">${totalPrice}</span>
                             </div>
                         </div>
                     </article>

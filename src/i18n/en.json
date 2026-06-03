@@ -53,10 +53,20 @@
   "calculator": {
     "heading": "Custom Furniture Price Calculator",
     "description": "Get an instant cost estimate for your premium custom furniture project.",
+    "selectStyle": "Furniture Layout Style",
     "selectMaterial": "Select Material Type",
     "width": "Project Width (cm)",
+    "baseWidth": "Base Width (cm)",
+    "uLeft": "Left Wing Depth (cm)",
+    "uBack": "Back Wall Width (cm)",
+    "uRight": "Right Wing Depth (cm)",
     "height": "Project Height (cm)",
     "additionalFeatures": "Additional Custom Features",
+    "styles": {
+      "rectangle": "Square / Rectangle",
+      "vshape": "V-Shape / Triangle",
+      "ushape": "U-Shape Structure"
+    },
     "addons": {
       "led": "LED Lighting",
       "softClose": "Soft Close Hinges",
@@ -151,6 +161,13 @@
     },
     "hiddenDescription": "Showcasing architectural woodwork and custom furniture projects across Armenia, specifically in Yerevan. Our portfolio includes modern living spaces, luxury kitchen installations, and executive office designs."
   },
+  "product_specs": {
+    "collection": "Stone Cut (C)",
+    "surface_type_label": "Surface Types",
+    "surface_type_value": "Glossy",
+    "dimensions_label": "Slab Dimensions",
+    "dimensions_value": "3680 x 760 x 12 mm"
+  },
   "contact": {
     "workflow": "Our Workflow",
     "heading": "Let's Create Something Beautiful",
@@ -214,10 +231,17 @@
     "products": {
       "title": "Furniture Products | BestProject.am",
       "description": "Explore our furniture collection: sofas, chairs, tables, and home decor."
+    },
+    "stones": {
+      "details": {
+        "title": "{{stone}} Premium Acrylic Surface | BestProject.am",
+        "description": "Discover technical specifications, slab sizes, and glossy finishes for the high-quality {{stone}} solid surface collection."
+      }
     }
   },
   "stones": "Stones",
   "projects-all": "Projects",
   "previous": "Previous",
-  "next": "Next"
+  "next": "Next",
+  "request_measurement": "Request Measurement"
 }

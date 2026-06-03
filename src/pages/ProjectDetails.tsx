@@ -34,7 +34,7 @@ export default function ProjectDetails() {
                            md:h-[550px]: Reduces the height on desktop so it's not too tall.
                            object-cover: Maintains the crop without distortion.
                         */
-                        className="w-full h-[50vh] md:h-[550px] object-cover block"
+                        className="w-full h-[50vh] md:h-[620px] object-cover block"
                     />
                 </div>
 

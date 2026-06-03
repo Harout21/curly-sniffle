@@ -127,7 +127,7 @@ export function Contact() {
                     </div>
 
                     <div className="text-lg text-[#1a1a1a] font-medium break-words">
-                      +374 (10) 123-456
+                      +374 77 44 45 96
                     </div>
                   </div>
                 </a>
