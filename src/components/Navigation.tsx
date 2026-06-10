@@ -42,7 +42,6 @@ export function Navigation() {
     { id: "process", name: t("nav.process"), href: "#process", type: "scroll" },
     { id: "tech", name: t("nav.technologies"), href: "#technologies", type: "scroll" },
     { id: "products", name: t("nav.products"), href: "#products", type: "scroll" },
-    { id: "projects", name: t("nav.projects"), href: "#projects", type: "scroll" },
     { id: "contact", name: t("nav.contact"), href: "#contact", type: "scroll" },
     { id: "stones", name: t("stones"), href: `/${currentLang}/stones`, type: "route" },
     { id: "projects-all", name: t("projects-all"), href: `/${currentLang}/projects`, type: "route" }

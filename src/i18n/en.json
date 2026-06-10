@@ -226,15 +226,23 @@
   "seo": {
     "home": {
       "title": "Best Furniture in Armenia | BestProject.am",
-      "description": "Buy modern furniture in Armenia. Sofas, beds, tables and custom designs with best quality and price."
+      "description": "Buy modern furniture in Armenia. Sofas, Beds, Tables, Stones, Home Decor and custom designs with best quality and price."
     },
     "products": {
       "title": "Furniture Products | BestProject.am",
-      "description": "Explore our furniture collection: sofas, chairs, tables, and home decor."
+      "description": "Explore our furniture collection: sofas, chairs, stones ,tables, and home decor."
+    },
+    "projects": {
+      "details": {
+        "title": "Premium Projects | BestProject.am"
+      },
+      "title": "Furniture Projects | BestProject.am",
+      "description": "Explore our furniture collection: sofas, stones ,chairs, tables, and home decor."
     },
     "stones": {
+      "title": "Premium Acrylic Surface Stones | BestProject.am",
       "details": {
-        "title": "{{stone}} Premium Acrylic Surface | BestProject.am",
+        "title": "{{stone}} Premium Acrylic Surface Stones | BestProject.am",
         "description": "Discover technical specifications, slab sizes, and glossy finishes for the high-quality {{stone}} solid surface collection."
       }
     }
