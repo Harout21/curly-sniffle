@@ -8,22 +8,23 @@ type FurnitureStyle = 'rectangle' | 'v-shape' | 'u-shape';
 interface Addon {
     id: string;
     label: string;
-    price: number;
+    priceAMD: number;
 }
 
 export function PriceCalculator() {
     const { t } = useTranslation();
 
+    // Adjusted pricing values to baseline Armenian Dram (AMD)
     const addons: Addon[] = [
-        { id: 'led', label: t('calculator.addons.led'), price: 250 },
-        { id: 'soft-close', label: t('calculator.addons.softClose'), price: 180 },
-        { id: 'custom-color', label: t('calculator.addons.customColor'), price: 320 },
+        { id: 'led', label: t('calculator.addons.led'), priceAMD: 100000 },
+        { id: 'soft-close', label: t('calculator.addons.softClose'), priceAMD: 72000 },
+        { id: 'custom-color', label: t('calculator.addons.customColor'), priceAMD: 128000 },
     ];
 
-    const materialPrices: Record<Material, number> = {
-        mdf: 80,
-        'solid-wood': 150,
-        premium: 220,
+    const materialPricesAMD: Record<Material, number> = {
+        mdf: 32000,
+        'solid-wood': 60000,
+        premium: 88000,
     };
 
     const materialLabels: Record<Material, string> = {
@@ -38,10 +39,10 @@ export function PriceCalculator() {
     const [height, setHeight] = useState<number>(200);
 
     // Dimension States
-    const [width, setWidth] = useState<number>(120);       // Used for Rectangle Main Width & V-Shape Base
-    const [sideWidthA, setSideWidthA] = useState<number>(60); // Used for U-Shape Left Wing
-    const [sideWidthB, setSideWidthB] = useState<number>(120); // Used for U-Shape Back Wall
-    const [sideWidthC, setSideWidthC] = useState<number>(60); // Used for U-Shape Right Wing
+    const [width, setWidth] = useState<number>(120);
+    const [sideWidthA, setSideWidthA] = useState<number>(60);
+    const [sideWidthB, setSideWidthB] = useState<number>(120);
+    const [sideWidthC, setSideWidthC] = useState<number>(60);
 
     const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
 
@@ -57,29 +58,36 @@ export function PriceCalculator() {
     const calculateArea = (): number => {
         switch (style) {
             case 'v-shape':
-                // Triangle formula: (Base * Height) / 2
                 return (width * height) / 2 / 10000;
-
             case 'u-shape':
-                // Combined area of 3 structural walls sharing the same height
                 const totalUWidth = sideWidthA + sideWidthB + sideWidthC;
                 return (totalUWidth * height) / 10000;
-
             case 'rectangle':
             default:
-                // Standard bounding box: Width * Height
                 return (width * height) / 10000;
         }
     };
 
-    const basePrice = materialPrices[material];
+    const basePrice = materialPricesAMD[material];
     const area = calculateArea();
     const materialCost = basePrice * area;
     const addonsCost = selectedAddons.reduce((sum, addonId) => {
         const addon = addons.find((a) => a.id === addonId);
-        return sum + (addon?.price || 0);
+        return sum + (addon?.priceAMD || 0);
     }, 0);
     const totalPrice = Math.round(materialCost + addonsCost);
+
+    // Armenian Dram Formatting Helper
+    const formatAMD = (val: number) => {
+        return new Intl.NumberFormat('hy-AM', {
+            style: 'currency',
+            currency: 'AMD',
+            maximumFractionDigits: 0
+        }).format(val).replace('AMD', '֏');
+    };
+
+    // Reusable styling for perfectly centered dropdown arrows
+    const selectDropdownClass = "w-full pl-4 pr-10 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b] appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23302c2b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:12px_12px] bg-[position:right_16px_center] bg-no-repeat";
 
     return (
         <section id="calculator" className="py-24 bg-white" aria-labelledby="calc-heading">
@@ -105,16 +113,18 @@ export function PriceCalculator() {
                             <label htmlFor="style-select" className="block text-[#302c2b] mb-3 font-medium">
                                 {t('calculator.selectStyle', 'Furniture Layout Style')}
                             </label>
-                            <select
-                                id="style-select"
-                                value={style}
-                                onChange={(e) => setStyle(e.target.value as FurnitureStyle)}
-                                className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
-                            >
-                                <option value="rectangle">{t('calculator.styles.rectangle', 'Square / Rectangle')}</option>
-                                <option value="v-shape">{t('calculator.styles.vshape', 'V-Shape / Triangle')}</option>
-                                <option value="u-shape">{t('calculator.styles.ushape', 'U-Shape Structure')}</option>
-                            </select>
+                            <div className="relative">
+                                <select
+                                    id="style-select"
+                                    value={style}
+                                    onChange={(e) => setStyle(e.target.value as FurnitureStyle)}
+                                    className={selectDropdownClass}
+                                >
+                                    <option value="rectangle">{t('calculator.styles.rectangle', 'Square / Rectangle')}</option>
+                                    <option value="v-shape">{t('calculator.styles.vshape', 'V-Shape / Triangle')}</option>
+                                    <option value="u-shape">{t('calculator.styles.ushape', 'U-Shape Structure')}</option>
+                                </select>
+                            </div>
                         </div>
 
                         {/* Material Selector */}
@@ -122,18 +132,20 @@ export function PriceCalculator() {
                             <label htmlFor="material-select" className="block text-[#302c2b] mb-3 font-medium">
                                 {t('calculator.selectMaterial')}
                             </label>
-                            <select
-                                id="material-select"
-                                value={material}
-                                onChange={(e) => setMaterial(e.target.value as Material)}
-                                className="w-full px-4 py-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e54201] text-[#302c2b]"
-                            >
-                                {Object.entries(materialLabels).map(([value, label]) => (
-                                    <option key={value} value={value}>
-                                        {label}
-                                    </option>
-                                ))}
-                            </select>
+                            <div className="relative">
+                                <select
+                                    id="material-select"
+                                    value={material}
+                                    onChange={(e) => setMaterial(e.target.value as Material)}
+                                    className={selectDropdownClass}
+                                >
+                                    {Object.entries(materialLabels).map(([value, label]) => (
+                                        <option key={value} value={value}>
+                                            {label} ({formatAMD(materialPricesAMD[value as Material])}/m²)
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
 
                         {/* Condition-based Inputs depending on Style */}
@@ -237,7 +249,7 @@ export function PriceCalculator() {
                                             <Check className="text-[#e54201]" size={20} aria-hidden="true" />
                                         )}
                                     </div>
-                                    <span className="text-gray-600 text-sm">+${addon.price}</span>
+                                    <span className="text-[#e54201] font-semibold text-sm">+{formatAMD(addon.priceAMD)}</span>
                                 </button>
                             ))}
                         </div>
@@ -251,14 +263,14 @@ export function PriceCalculator() {
                         <div className="space-y-2 mb-4">
                             <div className="flex justify-between text-gray-600">
                                 <span>{t('calculator.materialCost', { area: area.toFixed(2) })}</span>
-                                <span>${Math.round(materialCost)}</span>
+                                <span>{formatAMD(materialCost)}</span>
                             </div>
                             {selectedAddons.map((addonId) => {
                                 const addon = addons.find((a) => a.id === addonId);
                                 return addon ? (
                                     <div key={addonId} className="flex justify-between text-gray-600">
                                         <span>{t('calculator.upgrade', { addon: addon.label })}</span>
-                                        <span>${addon.price}</span>
+                                        <span>{formatAMD(addon.priceAMD)}</span>
                                     </div>
                                 ) : null;
                             })}
@@ -266,7 +278,7 @@ export function PriceCalculator() {
                         <div className="border-t border-gray-200 pt-4">
                             <div className="flex justify-between items-center">
                                 <span className="text-2xl text-[#302c2b] font-bold">{t('calculator.totalEstimate')}</span>
-                                <span className="text-3xl text-[#e54201] font-bold">${totalPrice}</span>
+                                <span className="text-3xl text-[#e54201] font-bold">{formatAMD(totalPrice)}</span>
                             </div>
                         </div>
                     </article>

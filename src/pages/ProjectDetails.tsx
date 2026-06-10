@@ -5,8 +5,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import SEO from "../components/Seo";
 
 export default function ProjectDetails() {
-    const { id } = useParams();
-    const { t } = useTranslation();
+    // 1. Grab both id and lang parameter states cleanly from route parameter context
+    const { id, lang } = useParams<{ id: string; lang: string }>();
+    const { t, i18n } = useTranslation();
+
+    // Fallback safe value matching your global default routing setup
+    const currentLang = lang || i18n.language || "hy";
 
     const currentIndex = projects.findIndex((p) => p.id === id);
     const project = projects[currentIndex];
@@ -44,7 +48,8 @@ export default function ProjectDetails() {
                     {/* Previous Button */}
                     {prevProject ? (
                         <Link
-                            to={`/projects/${prevProject.id}`}
+                            // 2. Prepend the active language token parameter dynamically here
+                            to={`/${currentLang}/projects/${prevProject.id}`}
                             className="group flex items-center gap-3 text-gray-500 hover:text-[#e54201] transition-colors"
                         >
                             <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
@@ -60,7 +65,8 @@ export default function ProjectDetails() {
                     {/* Next Button */}
                     {nextProject ? (
                         <Link
-                            to={`/projects/${nextProject.id}`}
+                            // 3. And prepend the active language token here as well
+                            to={`/${currentLang}/projects/${nextProject.id}`}
                             className="group flex items-center gap-3 text-right text-gray-500 hover:text-[#e54201] transition-colors"
                         >
                             <div className="flex flex-col items-end">

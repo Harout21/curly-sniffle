@@ -1,10 +1,16 @@
-import {Link} from "react-router-dom";
-import {projects} from "../data/projectsData";
-import {useTranslation} from "react-i18next";
+import { Link, useParams } from "react-router-dom";
+import { projects } from "../data/projectsData";
+import { useTranslation } from "react-i18next";
 import SEO from "../components/Seo";
 
 export default function Projects() {
-    const {t} = useTranslation();
+    const { t, i18n } = useTranslation();
+
+    // 1. Grab the active language path parameter safely from your router context
+    const { lang } = useParams<{ lang: string }>();
+
+    // Fallback safe value matching your global router architecture default
+    const currentLang = lang || i18n.language || "hy";
 
     return (
         <>
@@ -25,7 +31,8 @@ export default function Projects() {
                     {projects.map((p) => (
                         <Link
                             key={p.id}
-                            to={`/projects/${p.id}`}
+                            // 2. Prepend the active language token parameter dynamically
+                            to={`/${currentLang}/projects/${p.id}`}
                             className="group overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all"
                         >
                             <div className="overflow-hidden">

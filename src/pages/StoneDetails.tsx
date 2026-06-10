@@ -83,7 +83,7 @@ export default function StoneDetails() {
                                 {t("description")}
                             </p>
                             <p className="text-gray-700 leading-relaxed">
-                                {t("high_quality")} {displayName} {t("stone_desc_suffix")}
+                              {displayName}
                             </p>
                         </div>
 

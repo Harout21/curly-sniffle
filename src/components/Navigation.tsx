@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 // @ts-ignore
 import MAIN_LOGO from "../images/main.png";
@@ -32,6 +32,11 @@ export function Navigation() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Extract active dynamic language token safely from path parameters context
+  const { lang } = useParams<{ lang: string }>();
+  const currentLang = lang || i18n.language || "hy";
+
+  // Prepend localized dynamic token paths for independent sub-route entries
   const navLinks: NavLink[] = useMemo(() => [
     { id: "about", name: t("nav.about"), href: "#about", type: "scroll" },
     { id: "process", name: t("nav.process"), href: "#process", type: "scroll" },
@@ -39,16 +44,28 @@ export function Navigation() {
     { id: "products", name: t("nav.products"), href: "#products", type: "scroll" },
     { id: "projects", name: t("nav.projects"), href: "#projects", type: "scroll" },
     { id: "contact", name: t("nav.contact"), href: "#contact", type: "scroll" },
-    { id: "stones", name: t("stones"), href: "/stones", type: "route" },
-    { id: "projects-all", name: t("projects-all"), href: "/projects", type: "route" }
-  ], [t]);
+    { id: "stones", name: t("stones"), href: `/${currentLang}/stones`, type: "route" },
+    { id: "projects-all", name: t("projects-all"), href: `/${currentLang}/projects`, type: "route" }
+  ], [t, currentLang]);
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-    localStorage.setItem("lang", lng);
-    document.documentElement.lang = lng;
+  // Unified language path switcher logic maintaining matching path variables
+  const changeLanguage = (targetLang: string) => {
+    if (targetLang === currentLang) return;
+
+    const pathSegments = location.pathname.split("/").filter(Boolean);
+
+    if (pathSegments.length === 0) {
+      navigate(`/${targetLang}`);
+    } else {
+      pathSegments[0] = targetLang;
+      navigate(`/${pathSegments.join("/")}${location.search}${location.hash}`);
+    }
+
+    i18n.changeLanguage(targetLang);
+    localStorage.setItem("lang", targetLang);
+    document.documentElement.lang = targetLang;
     document.body.classList.remove("font-en", "font-hy", "font-ru");
-    document.body.classList.add(`font-${lng}`);
+    document.body.classList.add(`font-${targetLang}`);
   };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: NavLink) => {
@@ -71,18 +88,25 @@ export function Navigation() {
       }
     };
 
-    if (location.pathname !== "/") {
-      navigate("/");
+    // Ensure scrolling targets return to the localized home landing base
+    if (location.pathname !== `/${currentLang}` && location.pathname !== `/${currentLang}/`) {
+      navigate(`/${currentLang}`);
       setTimeout(scrollToSection, 300);
       return;
     }
     scrollToSection();
   };
 
+  // Sync state cleanly with native browser execution instances on initial mount
   useEffect(() => {
-    const lng = localStorage.getItem("lang") || i18n.language;
-    changeLanguage(lng);
-  }, []);
+    const savedLng = localStorage.getItem("lang") || lang || i18n.language || "hy";
+    if (i18n.language !== savedLng) {
+      i18n.changeLanguage(savedLng);
+    }
+    document.documentElement.lang = savedLng;
+    document.body.classList.remove("font-en", "font-hy", "font-ru");
+    document.body.classList.add(`font-${savedLng}`);
+  }, [lang, i18n]);
 
   return (
       <>
@@ -98,7 +122,7 @@ export function Navigation() {
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    if (location.pathname !== "/") navigate("/");
+                    if (location.pathname !== `/${currentLang}`) navigate(`/${currentLang}`);
                     else window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                   className="flex items-center gap-2 transition-transform hover:scale-105"
@@ -121,17 +145,17 @@ export function Navigation() {
 
                 {/* ULTRA COMPACT DESKTOP TOGGLE */}
                 <div className="flex items-center bg-gray-50 p-0.5 rounded-full border border-gray-200/50">
-                  {languages.map((lang) => (
+                  {languages.map((item) => (
                       <button
-                          key={lang.code}
-                          onClick={() => changeLanguage(lang.code)}
+                          key={item.code}
+                          onClick={() => changeLanguage(item.code)}
                           className={`px-2 py-0.5 rounded-full text-[10px] cursor-pointer font-black transition-all ${
-                              i18n.language === lang.code
+                              currentLang === item.code
                                   ? "bg-white text-[#e54201] shadow-[0_1px_3px_rgba(0,0,0,0.1)]"
                                   : "text-gray-400 hover:text-gray-600"
                           }`}
                       >
-                        {lang.label}
+                        {item.label}
                       </button>
                   ))}
                 </div>
@@ -181,21 +205,21 @@ export function Navigation() {
                     {/* ULTRA COMPACT MOBILE SELECTOR (Horizontal Row) */}
                     <div className="mt-4 pt-8 border-t w-full px-4">
                       <div className="flex justify-center gap-2">
-                        {languages.map((lang) => (
+                        {languages.map((item) => (
                             <button
-                                key={lang.code}
+                                key={item.code}
                                 onClick={() => {
-                                  changeLanguage(lang.code);
+                                  changeLanguage(item.code);
                                   setIsMobileMenuOpen(false);
                                 }}
                                 className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${
-                                    i18n.language === lang.code
+                                    currentLang === item.code
                                         ? "bg-[#302c2b] border-[#302c2b] text-white"
                                         : "bg-white border-gray-200 text-gray-500"
                                 }`}
                             >
-                              <img src={lang.flag} className="w-3.5 h-3.5 rounded-full object-cover" alt="" />
-                              <span className="font-bold text-[11px]">{lang.fullLabel}</span>
+                              <img src={item.flag} className="w-3.5 h-3.5 rounded-full object-cover" alt="" />
+                              <span className="font-bold text-[11px]">{item.fullLabel}</span>
                             </button>
                         ))}
                       </div>

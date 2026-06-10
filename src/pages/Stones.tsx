@@ -1,13 +1,16 @@
-import {Link} from "react-router-dom";
-import {stones} from "../data/stonesData";
-import {useTranslation} from "react-i18next";
+import { Link, useParams } from "react-router-dom";
+import { stones } from "../data/stonesData";
+import { useTranslation } from "react-i18next";
 import SEO from "../components/Seo";
 
 export default function Stones() {
-    const {t, i18n} = useTranslation();
+    const { t, i18n } = useTranslation();
 
-    // Get current language once to keep it clean
-    const currentLang = i18n.language;
+    // 1. Grab the active language path parameter safely from your router context
+    const { lang } = useParams<{ lang: string }>();
+
+    // Fallback safe value matching your global router architecture default
+    const currentLang = lang || i18n.language || "hy";
 
     return (
         <>
@@ -40,7 +43,8 @@ export default function Stones() {
                         return (
                             <Link
                                 key={stone.id}
-                                to={`/stones/${stone.id}`}
+                                // 2. Prepend the active language token parameter dynamically
+                                to={`/${currentLang}/stones/${stone.id}`}
                                 className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
                             >
                                 {/* IMAGE */}
