@@ -226,34 +226,34 @@ export function PriceCalculator() {
                     </div>
 
                     {/* Features checklist */}
-                    <fieldset className="mb-8">
-                        <legend className="block text-[#302c2b] mb-4 font-medium">
-                            {t('calculator.additionalFeatures')}
-                        </legend>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            {addons.map((addon) => (
-                                <button
-                                    key={addon.id}
-                                    type="button"
-                                    onClick={() => toggleAddon(addon.id)}
-                                    aria-pressed={selectedAddons.includes(addon.id)}
-                                    className={`p-4 rounded border-2 transition-all text-left ${
-                                        selectedAddons.includes(addon.id)
-                                            ? 'border-[#e54201] bg-white'
-                                            : 'border-gray-300 bg-white hover:border-[#e54201]'
-                                    }`}
-                                >
-                                    <div className="flex items-start justify-between mb-2">
-                                        <span className="text-[#302c2b] font-medium">{addon.label}</span>
-                                        {selectedAddons.includes(addon.id) && (
-                                            <Check className="text-[#e54201]" size={20} aria-hidden="true" />
-                                        )}
-                                    </div>
-                                    <span className="text-[#e54201] font-semibold text-sm">+{formatAMD(addon.priceAMD)}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </fieldset>
+                    {/*<fieldset className="mb-8">*/}
+                    {/*    <legend className="block text-[#302c2b] mb-4 font-medium">*/}
+                    {/*        {t('calculator.additionalFeatures')}*/}
+                    {/*    </legend>*/}
+                    {/*    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">*/}
+                    {/*        {addons.map((addon) => (*/}
+                    {/*            <button*/}
+                    {/*                key={addon.id}*/}
+                    {/*                type="button"*/}
+                    {/*                onClick={() => toggleAddon(addon.id)}*/}
+                    {/*                aria-pressed={selectedAddons.includes(addon.id)}*/}
+                    {/*                className={`p-4 rounded border-2 transition-all text-left ${*/}
+                    {/*                    selectedAddons.includes(addon.id)*/}
+                    {/*                        ? 'border-[#e54201] bg-white'*/}
+                    {/*                        : 'border-gray-300 bg-white hover:border-[#e54201]'*/}
+                    {/*                }`}*/}
+                    {/*            >*/}
+                    {/*                <div className="flex items-start justify-between mb-2">*/}
+                    {/*                    <span className="text-[#302c2b] font-medium">{addon.label}</span>*/}
+                    {/*                    {selectedAddons.includes(addon.id) && (*/}
+                    {/*                        <Check className="text-[#e54201]" size={20} aria-hidden="true" />*/}
+                    {/*                    )}*/}
+                    {/*                </div>*/}
+                    {/*                <span className="text-[#e54201] font-semibold text-sm">+{formatAMD(addon.priceAMD)}</span>*/}
+                    {/*            </button>*/}
+                    {/*        ))}*/}
+                    {/*    </div>*/}
+                    {/*</fieldset>*/}
 
                     {/* Total Price breakdown block */}
                     <article className="bg-white rounded-lg p-6 mb-6" aria-label={t('calculator.priceSummary')}>
