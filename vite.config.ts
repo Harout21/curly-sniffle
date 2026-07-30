@@ -46,7 +46,7 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
         name: 'Best Project',
-        short_name: 'BestProject',
+        short_name: 'Best Project',
         description: 'Best Project - Natural Stone',
         theme_color: '#ffffff',
         background_color: '#ffffff',
