@@ -104,7 +104,7 @@ export function AboutUs() {
               viewport={{ once: true }}
               className="mt-20 pt-12 border-t border-slate-100"
           >
-            <p className="text-center text-xs uppercase tracking-[0.25em] font-bold text-slate-400 mb-10">
+            <p className="text-center text-xs uppercase tracking-[0.25em] font-bold mb-10">
               {t("about.trustedBy")}
             </p>
 
