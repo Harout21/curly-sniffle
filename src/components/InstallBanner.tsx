@@ -1,10 +1,8 @@
-// src/components/InstallBanner.jsx
 import { useInstallPrompt } from '@/hooks/useInstallPrompt'
 
 export function InstallBanner() {
     const { canInstall, install, dismiss } = useInstallPrompt()
 
-    // Safe client-side check inside the component
     const isMobile = typeof window !== 'undefined' && /android|iphone|ipad|ipod/i.test(navigator.userAgent)
 
     if (!canInstall || !isMobile) return null

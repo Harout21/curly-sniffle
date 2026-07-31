@@ -29,14 +29,17 @@ export default function SEO({
     const seoDescription = descriptionOverride || t(`seo.${page}.description`, "Best Project - High quality Corian and Grandex solid surface stone solutions.");
     const seoImage = imageOverride || `${DOMAIN}/apple-touch-icon.png`;
 
-    // 2. Extract clean path without current language prefix (e.g. "/stones/corian" from "/hy/stones/corian")
+    // 2. Extract clean path without current language prefix safely
     const pathSegments = location.pathname.split("/").filter(Boolean);
-    const pathWithoutLang =
+    const cleanPathSegments =
         pathSegments.length > 0 && SUPPORTED_LANGS.includes(pathSegments[0])
-            ? "/" + pathSegments.slice(1).join("/")
-            : location.pathname;
+            ? pathSegments.slice(1)
+            : pathSegments;
 
-    // 3. Full Canonical URL
+    // Construct path without lang, ensuring it starts with / but avoids trailing double slashes
+    const pathWithoutLang = cleanPathSegments.length > 0 ? `/${cleanPathSegments.join("/")}` : "";
+
+    // 3. Full Canonical URL (e.g., https://bestproject.am/hy/stones/corian)
     const canonicalUrl = `${DOMAIN}/${currentLang}${pathWithoutLang}${location.search}`;
 
     return (

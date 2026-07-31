@@ -58,37 +58,39 @@ export default defineConfig({
       ],
     }),
     tailwindcss(),
+    // vite.config.ts (PWA Plugin section)
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
         name: 'Best Project',
         short_name: 'Best Project',
-        description: 'Best Project - Stoes',
-        theme_color: '#1a1a1a',       // ← match your app's dark color
+        description: 'Best Project - Stones',
+        theme_color: '#1a1a1a',
         background_color: '#1a1a1a',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
         start_url: '/',
         lang: 'hy',
-        // ✅ CORRECT
         icons: [
           {
-            src: '/pwa-192x192.png',
+            src: '/pwa-192x192.png', // Must have leading slash /
             sizes: '192x192',
             type: 'image/png',
+            purpose: 'any',
           },
           {
-            src: '/pwa-512x512.png',
+            src: '/pwa-512x512.png', // Must have leading slash /
             sizes: '512x512',
             type: 'image/png',
+            purpose: 'any',
           },
           {
-            src: '/pwa-512x512.png',
+            src: '/pwa-512x512.png', // Must have leading slash /
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'maskable',
+            purpose: 'maskable', // Strictly separated from 'any'
           },
         ],
       },
@@ -96,33 +98,8 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
         globIgnores: ['sitemap.xml', 'robots.txt'],
         navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/bestproject\.am\/api\//i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24, // 24 hours
-              },
-              networkTimeoutSeconds: 10,
-            },
-          },
-          {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'image-cache',
-              expiration: {
-                maxEntries: 200,
-                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-              },
-            },
-          },
-        ],
       },
-    }),
+    })
   ],
   resolve: {
     alias: {

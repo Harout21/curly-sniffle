@@ -1,8 +1,5 @@
-// src/hooks/useInstallPrompt.js
 import { useState, useEffect } from 'react'
 
-// 1. Globally capture the beforeinstallprompt event the second the module loads
-// (This prevents missing the event on Android where it fires very early)
 let globalDeferredPrompt = null
 
 if (typeof window !== 'undefined') {
@@ -20,7 +17,6 @@ export function useInstallPrompt() {
     })
 
     useEffect(() => {
-        // Check if the app is already running in standalone (installed) mode
         if (window.matchMedia('(display-mode: standalone)').matches) {
             setIsInstalled(true)
             return
@@ -39,7 +35,6 @@ export function useInstallPrompt() {
             localStorage.removeItem('pwa_banner_dismissed')
         }
 
-        // Catch the event if it was triggered before the hook mounted
         if (globalDeferredPrompt && !prompt) {
             setPrompt(globalDeferredPrompt)
         }
@@ -57,9 +52,7 @@ export function useInstallPrompt() {
         const activePrompt = prompt || globalDeferredPrompt
         if (!activePrompt) return false
 
-        // Trigger the native browser install prompt overlay
         activePrompt.prompt()
-
         const { outcome } = await activePrompt.userChoice
 
         if (outcome === 'accepted') {
@@ -76,15 +69,6 @@ export function useInstallPrompt() {
         setPrompt(null)
     }
 
-    // Handy function to reset dismissal state during testing: call resetDismiss() in your browser console
-    const resetDismiss = () => {
-        localStorage.removeItem('pwa_banner_dismissed')
-        setIsDismissed(false)
-        if (globalDeferredPrompt) {
-            setPrompt(globalDeferredPrompt)
-        }
-    }
-
     const canInstall = Boolean(prompt || globalDeferredPrompt) && !isInstalled && !isDismissed
 
     return {
@@ -92,6 +76,5 @@ export function useInstallPrompt() {
         isInstalled,
         install,
         dismiss,
-        resetDismiss,
     }
 }
