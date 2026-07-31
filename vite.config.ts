@@ -40,14 +40,6 @@ export default defineConfig({
     react(),
     sitemap({
       hostname: 'https://bestproject.am',
-      outDir: 'dist',
-      generateRobotsTxt: true,
-      robots: [
-        {
-          userAgent: '*',
-          allow: '/',
-        },
-      ],
       dynamicRoutes: [
         '/',
         '/hy',
@@ -68,68 +60,34 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: [
-        'favicon.ico',
-        'apple-touch-icon.png',
-        'mask-icon.svg',
-        'robots.txt',
-        'sitemap.xml',
-        'screenshot-mobile.png',
-        'screenshot-desktop.png',
-      ],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
         name: 'Best Project',
         short_name: 'Best Project',
-        description: 'Best Project - Solid Surface Stones',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
+        description: 'Best Project - Stoes',
+        theme_color: '#1a1a1a',       // ← match your app's dark color
+        background_color: '#1a1a1a',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
         start_url: '/',
         lang: 'hy',
-
-        // -------------------------------------------------------------
-        // FIX 1: Split 'any maskable' into separate distinct entries
-        // -------------------------------------------------------------
         icons: [
           {
             src: 'pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
-            purpose: 'any',
           },
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any',
           },
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable', // Separated from 'any'
-          },
-        ],
-
-        // -------------------------------------------------------------
-        // FIX 2 & 3: Add screenshots for Richer PWA Install UI
-        // -------------------------------------------------------------
-        screenshots: [
-          {
-            src: 'screenshot-mobile.png',
-            sizes: '1080x1920',
-            type: 'image/png',
-            form_factor: 'narrow', // Mobile Richer Install UI
-            label: 'Best Project Mobile Preview',
-          },
-          {
-            src: 'screenshot-desktop.png',
-            sizes: '1920x1080',
-            type: 'image/png',
-            form_factor: 'wide', // Desktop Richer Install UI
-            label: 'Best Project Desktop Preview',
           },
         ],
       },

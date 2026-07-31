@@ -1,7 +1,7 @@
 // src/hooks/useInstallPrompt.js
 import { useState, useEffect } from 'react'
 
-// Capture the event globally in case it fires before React mounts
+// 1. Capture the event globally the second the JS file loads
 let globalDeferredPrompt = null
 
 if (typeof window !== 'undefined') {
@@ -12,55 +12,59 @@ if (typeof window !== 'undefined') {
 }
 
 export function useInstallPrompt() {
-    const [deferredPrompt, setDeferredPrompt] = useState(globalDeferredPrompt)
-    const [isDismissed, setIsDismissed] = useState(() => {
-        return localStorage.getItem('pwa_banner_dismissed') === 'true'
-    })
+    const [prompt, setPrompt] = useState(globalDeferredPrompt)
+    const [isInstalled, setIsInstalled] = useState(false)
 
     useEffect(() => {
-        const handleBeforeInstallPrompt = (e) => {
+        // Check if already installed
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            setIsInstalled(true)
+            return
+        }
+
+        const handler = (e) => {
             e.preventDefault()
             globalDeferredPrompt = e
-            setDeferredPrompt(e)
+            setPrompt(e)
         }
 
-        // Check if event was captured prior to hook mount
-        if (globalDeferredPrompt) {
-            setDeferredPrompt(globalDeferredPrompt)
+        // If the event was already captured before mount, grab it now
+        if (globalDeferredPrompt && !prompt) {
+            setPrompt(globalDeferredPrompt)
         }
 
-        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+        window.addEventListener('beforeinstallprompt', handler)
+        window.addEventListener('appinstalled', () => {
+            setIsInstalled(true)
+            globalDeferredPrompt = null
+        })
 
         return () => {
-            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+            window.removeEventListener('beforeinstallprompt', handler)
         }
     }, [])
 
     const install = async () => {
-        const promptEvent = deferredPrompt || globalDeferredPrompt
-        if (!promptEvent) return
+        const activePrompt = prompt || globalDeferredPrompt
+        if (!activePrompt) return false
 
-        promptEvent.prompt()
-        const { outcome } = await promptEvent.userChoice
+        activePrompt.prompt()
+        const { outcome } = await activePrompt.userChoice
 
         if (outcome === 'accepted') {
             globalDeferredPrompt = null
-            setDeferredPrompt(null)
+            setPrompt(null)
+            setIsInstalled(true)
         }
+        return outcome === 'accepted'
     }
 
-    const dismiss = () => {
-        localStorage.setItem('pwa_banner_dismissed', 'true')
-        setIsDismissed(true)
+    const dismiss = () => setPrompt(null)
+
+    return {
+        canInstall: Boolean(prompt || globalDeferredPrompt) && !isInstalled,
+        isInstalled,
+        install,
+        dismiss,
     }
-
-    // Clear dismissal status helper (useful for testing)
-    const resetDismiss = () => {
-        localStorage.removeItem('pwa_banner_dismissed')
-        setIsDismissed(false)
-    }
-
-    const canInstall = Boolean(deferredPrompt || globalDeferredPrompt) && !isDismissed
-
-    return { canInstall, install, dismiss, resetDismiss }
 }
