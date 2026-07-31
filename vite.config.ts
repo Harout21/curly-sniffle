@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from 'vite-plugin-sitemap';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// Import named exports from TS/JS data files
+// Safely import TS data using dynamic require/import handling or pre-parsed data
 import { corianStones } from './src/data/corianData';
 import { grandexStones } from './src/data/grandexData';
 
@@ -18,13 +18,13 @@ const stoneCategoryRoutes = languages.flatMap((lang) => [
 ]);
 
 // 2. Corian detail pages (/:lang/stones/corian/:id)
-const corianRoutes = corianStones.flatMap((stone: any) => {
+const corianRoutes = (corianStones || []).flatMap((stone: any) => {
   const stoneId = stone.id || stone.slug;
   return languages.map((lang) => `/${lang}/stones/corian/${stoneId}`);
 });
 
 // 3. Grandex detail pages (/:lang/stones/grandex/:id)
-const grandexRoutes = grandexStones.flatMap((stone: any) => {
+const grandexRoutes = (grandexStones || []).flatMap((stone: any) => {
   const stoneId = stone.id || stone.slug;
   return languages.map((lang) => `/${lang}/stones/grandex/${stoneId}`);
 });
@@ -40,6 +40,14 @@ export default defineConfig({
     react(),
     sitemap({
       hostname: 'https://bestproject.am',
+      outDir: 'dist',
+      generateRobotsTxt: true, // Automatically generates a public robots.txt referencing your sitemap
+      robots: [
+        {
+          userAgent: '*',
+          allow: '/',
+        },
+      ],
       dynamicRoutes: [
         '/',
         '/hy',
@@ -60,7 +68,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg', 'robots.txt', 'sitemap.xml'],
       manifest: {
         name: 'Best Project',
         short_name: 'Best Project',
@@ -93,7 +101,9 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
-        globIgnores: ['sitemap.xml'],
+        // Exclude sitemap and robots from SW navigation redirects
+        globIgnores: ['sitemap.xml', 'robots.txt'],
+        navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/bestproject\.am\/api\//i,
