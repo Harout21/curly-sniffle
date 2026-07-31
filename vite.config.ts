@@ -5,19 +5,34 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from 'vite-plugin-sitemap';
 import { VitePWA } from 'vite-plugin-pwa';
 
-import stoneSlugs from './src/data/stoneSlugs.json';
+// Import named exports from TS/JS data files
+import { corianStones } from './src/data/corianData';
+import { grandexStones } from './src/data/grandexData';
 
-const stoneRoutes = stoneSlugs.flatMap((stone) => [
-  `/hy/stones/${stone}`,
-  `/en/stones/${stone}`,
-  `/ru/stones/${stone}`,
+const languages = ['hy', 'en', 'ru'];
+
+// 1. Category landing pages (/hy/stones/corian, /hy/stones/grandex, etc.)
+const stoneCategoryRoutes = languages.flatMap((lang) => [
+  `/${lang}/stones/corian`,
+  `/${lang}/stones/grandex`,
 ]);
 
-const projectRoutes = Array.from({ length: 50 }, (_, i) => i + 1).flatMap((id) => [
-  `/hy/projects/${id}`,
-  `/en/projects/${id}`,
-  `/ru/projects/${id}`,
-]);
+// 2. Corian detail pages (/:lang/stones/corian/:id)
+const corianRoutes = corianStones.flatMap((stone: any) => {
+  const stoneId = stone.id || stone.slug;
+  return languages.map((lang) => `/${lang}/stones/corian/${stoneId}`);
+});
+
+// 3. Grandex detail pages (/:lang/stones/grandex/:id)
+const grandexRoutes = grandexStones.flatMap((stone: any) => {
+  const stoneId = stone.id || stone.slug;
+  return languages.map((lang) => `/${lang}/stones/grandex/${stoneId}`);
+});
+
+// 4. Project detail pages
+const projectRoutes = Array.from({ length: 50 }, (_, i) => i + 1).flatMap((id) =>
+    languages.map((lang) => `/${lang}/projects/${id}`)
+);
 
 export default defineConfig({
   base: '/',
@@ -36,8 +51,10 @@ export default defineConfig({
         '/hy/stones',
         '/en/stones',
         '/ru/stones',
+        ...stoneCategoryRoutes,
+        ...corianRoutes,
+        ...grandexRoutes,
         ...projectRoutes,
-        ...stoneRoutes,
       ],
     }),
     tailwindcss(),
@@ -47,7 +64,7 @@ export default defineConfig({
       manifest: {
         name: 'Best Project',
         short_name: 'Best Project',
-        description: 'Best Project - Natural Stone',
+        description: 'Best Project - Solid Surface Stones',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
@@ -75,13 +92,10 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // Cache all built assets
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
-        // Don't cache the sitemap (it changes)
         globIgnores: ['sitemap.xml'],
         runtimeCaching: [
           {
-            // Cache your API calls — adjust the URL pattern to match yours
             urlPattern: /^https:\/\/bestproject\.am\/api\//i,
             handler: 'NetworkFirst',
             options: {
@@ -94,7 +108,6 @@ export default defineConfig({
             },
           },
           {
-            // Cache images
             urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/i,
             handler: 'CacheFirst',
             options: {

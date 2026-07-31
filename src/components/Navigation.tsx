@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 
@@ -13,11 +13,18 @@ import FLAG_AM from "../images/hy.png";
 // @ts-ignore
 import FLAG_RU from "../images/ru.png";
 
-interface NavLink {
+interface NavSubLink {
   id: string;
   name: string;
   href: string;
-  type: "scroll" | "route";
+}
+
+interface NavLink {
+  id: string;
+  name: string;
+  href?: string;
+  type: "scroll" | "route" | "dropdown";
+  children?: NavSubLink[];
 }
 
 const languages = [
@@ -28,26 +35,34 @@ const languages = [
 
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isStonesDropdownOpen, setIsStonesDropdownOpen] = useState(false);
+  const [isMobileStonesOpen, setIsMobileStonesOpen] = useState(false);
+
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Extract active dynamic language token safely from path parameters context
   const { lang } = useParams<{ lang: string }>();
   const currentLang = lang || i18n.language || "hy";
 
-  // Prepend localized dynamic token paths for independent sub-route entries
   const navLinks: NavLink[] = useMemo(() => [
     { id: "about", name: t("nav.about"), href: "#about", type: "scroll" },
     { id: "process", name: t("nav.process"), href: "#process", type: "scroll" },
     { id: "tech", name: t("nav.technologies"), href: "#technologies", type: "scroll" },
     { id: "products", name: t("nav.products"), href: "#products", type: "scroll" },
+    {
+      id: "stones",
+      name: t("stones"),
+      type: "dropdown",
+      children: [
+        { id: "corian", name: t("stones.corian", "Corian"), href: `/${currentLang}/stones/corian` },
+        { id: "grandex", name: t("stones.grandex", "Grandex"), href: `/${currentLang}/stones/grandex` },
+      ],
+    },
+    { id: "projects-all", name: t("projects-all"), href: `/${currentLang}/projects`, type: "route" },
     { id: "contact", name: t("nav.contact"), href: "#contact", type: "scroll" },
-    { id: "stones", name: t("stones"), href: `/${currentLang}/stones`, type: "route" },
-    { id: "projects-all", name: t("projects-all"), href: `/${currentLang}/projects`, type: "route" }
   ], [t, currentLang]);
 
-  // Unified language path switcher logic maintaining matching path variables
   const changeLanguage = (targetLang: string) => {
     if (targetLang === currentLang) return;
 
@@ -67,17 +82,19 @@ export function Navigation() {
     document.body.classList.add(`font-${targetLang}`);
   };
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: NavLink) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href?: string, type?: string) => {
     e.preventDefault();
+    if (!href) return;
+
     setIsMobileMenuOpen(false);
 
-    if (link.type === "route") {
-      navigate(link.href);
+    if (type === "route") {
+      navigate(href);
       return;
     }
 
     const scrollToSection = () => {
-      const element = document.querySelector(link.href);
+      const element = document.querySelector(href);
       if (element) {
         const offset = 84;
         const bodyRect = document.body.getBoundingClientRect().top;
@@ -87,7 +104,6 @@ export function Navigation() {
       }
     };
 
-    // Ensure scrolling targets return to the localized home landing base
     if (location.pathname !== `/${currentLang}` && location.pathname !== `/${currentLang}/`) {
       navigate(`/${currentLang}`);
       setTimeout(scrollToSection, 300);
@@ -96,7 +112,6 @@ export function Navigation() {
     scrollToSection();
   };
 
-  // Sync state cleanly with native browser execution instances on initial mount
   useEffect(() => {
     const savedLng = localStorage.getItem("lang") || lang || i18n.language || "hy";
     if (i18n.language !== savedLng) {
@@ -131,16 +146,58 @@ export function Navigation() {
 
               {/* DESKTOP MENU */}
               <div className="hidden xl:flex items-center gap-8">
-                {navLinks.map((link) => (
-                    <a
-                        key={link.id}
-                        href={link.href}
-                        onClick={(e) => handleNavClick(e, link)}
-                        className="text-sm font-bold uppercase tracking-widest text-[#302c2b] hover:text-[#e54201] transition-colors"
-                    >
-                      {link.name}
-                    </a>
-                ))}
+                {navLinks.map((link) => {
+                  if (link.type === "dropdown") {
+                    return (
+                        <div
+                            key={link.id}
+                            className="relative"
+                            onMouseEnter={() => setIsStonesDropdownOpen(true)}
+                            onMouseLeave={() => setIsStonesDropdownOpen(false)}
+                        >
+                          <button className="flex items-center gap-1 text-sm font-bold uppercase tracking-widest text-[#302c2b] hover:text-[#e54201] transition-colors py-2">
+                            {link.name}
+                            <ChevronDown size={14} className={`transition-transform ${isStonesDropdownOpen ? "rotate-180" : ""}`} />
+                          </button>
+
+                          {/* Dropdown Menu */}
+                          <AnimatePresence>
+                            {isStonesDropdownOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 10 }}
+                                    transition={{ duration: 0.15 }}
+                                    className="absolute left-0 top-full w-44 bg-white shadow-md rounded-lg py-2 border border-gray-100"
+                                >
+                                  {link.children?.map((child) => (
+                                      <a
+                                          key={child.id}
+                                          href={child.href}
+                                          onClick={(e) => handleNavClick(e, child.href, "route")}
+                                          className="block px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#302c2b] hover:bg-gray-50 hover:text-[#e54201] transition-colors"
+                                      >
+                                        {child.name}
+                                      </a>
+                                  ))}
+                                </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                    );
+                  }
+
+                  return (
+                      <a
+                          key={link.id}
+                          href={link.href}
+                          onClick={(e) => handleNavClick(e, link.href, link.type)}
+                          className="text-sm font-bold uppercase tracking-widest text-[#302c2b] hover:text-[#e54201] transition-colors"
+                      >
+                        {link.name}
+                      </a>
+                  );
+                })}
 
                 {/* ULTRA COMPACT DESKTOP TOGGLE */}
                 <div className="flex items-center bg-gray-50 p-0.5 rounded-full border border-gray-200/50">
@@ -190,18 +247,56 @@ export function Navigation() {
                   </div>
 
                   <div className="flex flex-col items-center gap-6 mt-10 overflow-y-auto px-6">
-                    {navLinks.map((link) => (
-                        <a
-                            key={link.id}
-                            href={link.href}
-                            onClick={(e) => handleNavClick(e, link)}
-                            className="text-2xl font-bold text-[#302c2b] hover:text-[#e54201] text-center w-full py-2"
-                        >
-                          {link.name}
-                        </a>
-                    ))}
+                    {navLinks.map((link) => {
+                      if (link.type === "dropdown") {
+                        return (
+                            <div key={link.id} className="w-full text-center">
+                              <button
+                                  onClick={() => setIsMobileStonesOpen(!isMobileStonesOpen)}
+                                  className="flex items-center justify-center gap-2 text-2xl font-bold text-[#302c2b] hover:text-[#e54201] text-center w-full py-2"
+                              >
+                                {link.name}
+                                <ChevronDown size={20} className={`transition-transform ${isMobileStonesOpen ? "rotate-180" : ""}`} />
+                              </button>
 
-                    {/* ULTRA COMPACT MOBILE SELECTOR (Horizontal Row) */}
+                              <AnimatePresence>
+                                {isMobileStonesOpen && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        className="overflow-hidden bg-gray-50 rounded-lg my-2"
+                                    >
+                                      {link.children?.map((child) => (
+                                          <a
+                                              key={child.id}
+                                              href={child.href}
+                                              onClick={(e) => handleNavClick(e, child.href, "route")}
+                                              className="block py-3 text-lg font-semibold text-gray-700 hover:text-[#e54201]"
+                                          >
+                                            {child.name}
+                                          </a>
+                                      ))}
+                                    </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                        );
+                      }
+
+                      return (
+                          <a
+                              key={link.id}
+                              href={link.href}
+                              onClick={(e) => handleNavClick(e, link.href, link.type)}
+                              className="text-2xl font-bold text-[#302c2b] hover:text-[#e54201] text-center w-full py-2"
+                          >
+                            {link.name}
+                          </a>
+                      );
+                    })}
+
+                    {/* ULTRA COMPACT MOBILE SELECTOR */}
                     <div className="mt-4 pt-8 border-t w-full px-4">
                       <div className="flex justify-center gap-2">
                         {languages.map((item) => (

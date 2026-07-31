@@ -163,6 +163,7 @@
     "hiddenDescription": "Showcasing architectural woodwork and custom furniture projects across Armenia, specifically in Yerevan. Our portfolio includes modern living spaces, luxury kitchen installations, and executive office designs."
   },
   "product_specs": {
+    "brand": "Brand",
     "collection": "Stone Cut (C)",
     "surface_type_label": "Surface Types",
     "surface_type_value": "Glossy",
@@ -257,5 +258,6 @@
   "projects-all": "Projects",
   "previous": "Previous",
   "next": "Next",
-  "request_measurement": "Request Measurement"
+  "request_measurement": "Request Measurement",
+  "description": "Description"
 }

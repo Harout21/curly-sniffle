@@ -10,6 +10,7 @@ import Projects from "../pages/Projects";
 import ProjectDetails from "../pages/ProjectDetails";
 
 const VALID_LANGS = ['en', 'hy', 'ru'];
+const VALID_STONE_TYPES = ['corian', 'grandex'];
 
 // ==========================================
 // 🌐 LANGUAGE PATH WRAPPER COMPONENT
@@ -48,27 +49,53 @@ function LangWrapper() {
 }
 
 // ==========================================
+// 🪨 STONE TYPE VALIDATOR WRAPPER
+// ==========================================
+function StoneTypeGuard() {
+    const { lang, type } = useParams<{ lang: string; type: string }>();
+
+    // Redirect to default stone type ('corian') if the route parameter is unrecognized
+    if (!type || !VALID_STONE_TYPES.includes(type.toLowerCase())) {
+        return <Navigate to={`/${lang || 'hy'}/stones/corian`} replace />;
+    }
+
+    return <Outlet />;
+}
+
+// ==========================================
 // 🗺️ ROUTER APPLICATION CONFIGURATION
 // ==========================================
 export const router = createBrowserRouter([
     {
         path: "/",
-        // Automatic baseline redirect handler for root directory entries
         element: <Navigate to={`/${localStorage.getItem('lang') || 'hy'}`} replace />,
     },
     {
         path: "/:lang",
-        element: <LangWrapper />, // <- Wrapped architecture safely traps routing operations
+        element: <LangWrapper />,
         children: [
             {
                 element: <RootLayout />,
                 children: [
                     { index: true, element: <Home /> },
 
-                    // 🌐 STONES PAGE
-                    { path: "stones", element: <Stones /> },
-                    // 🔎 SINGLE STONE PAGE
-                    { path: "stones/:id", element: <StoneDetails /> },
+                    // 🌐 STONES ROUTES
+                    {
+                        path: "stones",
+                        children: [
+                            // Base "/stones" path redirects straight to Corian by default
+                            { index: true, element: <Navigate to="corian" replace /> },
+
+                            // Category-level routes (/stones/corian and /stones/grandex)
+                            {
+                                element: <StoneTypeGuard />,
+                                children: [
+                                    { path: ":type", element: <Stones /> },
+                                    { path: ":type/:id", element: <StoneDetails /> },
+                                ]
+                            }
+                        ]
+                    },
 
                     // 🛠️ PROJECTS PAGES
                     { path: "projects", element: <Projects /> },
