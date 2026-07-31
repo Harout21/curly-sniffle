@@ -41,7 +41,7 @@ export default defineConfig({
     sitemap({
       hostname: 'https://bestproject.am',
       outDir: 'dist',
-      generateRobotsTxt: true, // Automatically generates a public robots.txt referencing your sitemap
+      generateRobotsTxt: true,
       robots: [
         {
           userAgent: '*',
@@ -68,7 +68,15 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg', 'robots.txt', 'sitemap.xml'],
+      includeAssets: [
+        'favicon.ico',
+        'apple-touch-icon.png',
+        'mask-icon.svg',
+        'robots.txt',
+        'sitemap.xml',
+        'screenshot-mobile.png',
+        'screenshot-desktop.png',
+      ],
       manifest: {
         name: 'Best Project',
         short_name: 'Best Project',
@@ -80,28 +88,53 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         lang: 'hy',
+
+        // -------------------------------------------------------------
+        // FIX 1: Split 'any maskable' into separate distinct entries
+        // -------------------------------------------------------------
         icons: [
           {
             src: 'pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
+            purpose: 'any',
           },
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
+            purpose: 'any',
           },
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable',
+            purpose: 'maskable', // Separated from 'any'
+          },
+        ],
+
+        // -------------------------------------------------------------
+        // FIX 2 & 3: Add screenshots for Richer PWA Install UI
+        // -------------------------------------------------------------
+        screenshots: [
+          {
+            src: 'screenshot-mobile.png',
+            sizes: '1080x1920',
+            type: 'image/png',
+            form_factor: 'narrow', // Mobile Richer Install UI
+            label: 'Best Project Mobile Preview',
+          },
+          {
+            src: 'screenshot-desktop.png',
+            sizes: '1920x1080',
+            type: 'image/png',
+            form_factor: 'wide', // Desktop Richer Install UI
+            label: 'Best Project Desktop Preview',
           },
         ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
-        // Exclude sitemap and robots from SW navigation redirects
         globIgnores: ['sitemap.xml', 'robots.txt'],
         navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/],
         runtimeCaching: [
