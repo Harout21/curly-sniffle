@@ -1,10 +1,11 @@
 // src/components/InstallBanner.jsx
 import { useInstallPrompt } from '@/hooks/useInstallPrompt'
 
-const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent)
-
 export function InstallBanner() {
     const { canInstall, install, dismiss } = useInstallPrompt()
+
+    // Safe client-side check inside the component
+    const isMobile = typeof window !== 'undefined' && /android|iphone|ipad|ipod/i.test(navigator.userAgent)
 
     if (!canInstall || !isMobile) return null
 
@@ -19,12 +20,16 @@ export function InstallBanner() {
                 </div>
             </div>
             <div className="flex gap-2">
-                <button onClick={dismiss}
-                        className="rounded-lg px-3 py-1.5 text-xs text-gray-500 hover:bg-gray-100">
+                <button
+                    onClick={dismiss}
+                    className="rounded-lg px-3 py-1.5 text-xs text-gray-500 hover:bg-gray-100"
+                >
                     Not now
                 </button>
-                <button onClick={install}
-                        className="rounded-lg bg-gray-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-gray-700">
+                <button
+                    onClick={install}
+                    className="rounded-lg bg-gray-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-gray-700"
+                >
                     Install
                 </button>
             </div>
