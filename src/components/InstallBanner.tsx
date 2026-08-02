@@ -4,8 +4,9 @@ import { useInstallPrompt } from '@/hooks/useInstallPrompt'
 export function InstallBanner() {
     const { canInstall, install, dismiss } = useInstallPrompt()
 
-    // 1. Return early if Chrome/Edge hasn't captured the install prompt yet
-    if (!canInstall) return null
+    const isMobile = typeof window !== 'undefined' && /android|iphone|ipad|ipod/i.test(navigator.userAgent)
+
+    if (!isMobile) return null
 
     return (
         <div className="fixed bottom-6 left-4 right-4 z-[9999] flex items-center justify-between
