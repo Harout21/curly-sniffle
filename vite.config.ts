@@ -50,7 +50,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg', 'locales/**/*.json'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
         name: 'Best Project',
         short_name: 'Best Project',
@@ -62,28 +62,27 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         lang: 'hy',
-        // Critical Fix: Explicit separation of "any" and "maskable" for Android compatibility
         icons: [
           {
-            src: '/pwa-192x192.png',
+            src: 'pwa-192x192.png', // Removed leading slash for build resolution
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any'
           },
           {
-            src: '/pwa-192x192.png',
+            src: 'pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'maskable'
           },
           {
-            src: '/pwa-512x512.png',
+            src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any'
           },
           {
-            src: '/pwa-512x512.png',
+            src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable'
@@ -95,9 +94,10 @@ export default defineConfig({
         type: 'module',
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,json}'],
+        // Excluded json from globPatterns since runtimeCaching handles locales dynamically
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
         globIgnores: ['sitemap.xml', 'robots.txt'],
-        navigateFallback: '/index.html', // Critical Fix: Fallback for /hy/, /en/ routes
+        navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/],
         runtimeCaching: [
           {
