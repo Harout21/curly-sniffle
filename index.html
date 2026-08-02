@@ -1,31 +1,30 @@
 <!DOCTYPE html>
-
 <html lang="hy">
-
 <head>
-
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- PWA Manifest Link (Required by vite-plugin-pwa) -->
+    <link rel="manifest" href="/manifest.webmanifest" />
 
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <!-- Theme color matching manifest.json -->
+    <meta name="theme-color" content="#1a1a1a" />
+    <meta name="description" content="Best Project - Stones & Design" />
 
-    <meta name="apple-mobile-web-app-title" content="Best Project" />
-
+    <!-- Standard Favicon & Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
+    <!-- iOS Apple Web App Meta -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Best Project" />
+
     <title>BestProject.am</title>
-
 </head>
-
 <body>
-
 <div id="root"></div>
-
 <script type="module" src="/src/main.tsx"></script>
-
 </body>
-
 </html>
