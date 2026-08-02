@@ -1,7 +1,7 @@
 import { useInstallPrompt } from '@/hooks/useInstallPrompt'
 
 export function InstallBanner() {
-    const { canInstall, install, dismiss } = useInstallPrompt()
+    const { canInstall, install, dismiss, isPrompting } = useInstallPrompt()
 
     // 1. Return early if Chrome/Edge hasn't captured the install prompt yet,
     // or if the user dismissed/installed it already.
@@ -16,7 +16,7 @@ export function InstallBanner() {
         >
             <div className="flex items-center gap-3">
                 <img
-                    src="apple-touch-icon.png"
+                    src="/apple-touch-icon.png"
                     alt="Best Project Logo"
                     className="h-10 w-10 rounded-xl object-cover shadow-xs"
                     width={40}
@@ -32,16 +32,18 @@ export function InstallBanner() {
                 <button
                     type="button"
                     onClick={dismiss}
-                    className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+                    disabled={isPrompting}
+                    className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors disabled:opacity-50 disabled:pointer-events-none"
                 >
                     Not now
                 </button>
                 <button
                     type="button"
                     onClick={install}
-                    className="rounded-lg bg-gray-900 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-gray-800 active:scale-95 transition-all shadow-sm"
+                    disabled={isPrompting}
+                    className="rounded-lg bg-gray-900 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-gray-800 active:scale-95 transition-all shadow-sm disabled:opacity-60 disabled:pointer-events-none"
                 >
-                    Install
+                    {isPrompting ? 'Installing…' : 'Install'}
                 </button>
             </div>
         </aside>

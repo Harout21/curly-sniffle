@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 // Define interface for standard non-typed beforeinstallprompt event
 interface BeforeInstallPromptEvent extends Event {
@@ -9,6 +9,13 @@ interface BeforeInstallPromptEvent extends Event {
 // Global reference outside React component lifecycle
 let globalDeferredPrompt: BeforeInstallPromptEvent | null = null
 
+// "Not now" hides the banner for 30 seconds, then it reappears automatically
+// as long as the app still isn't installed. Stored in sessionStorage (not
+// localStorage) so it never survives across tabs/browser restarts and can
+// never accidentally suppress the banner permanently.
+const DISMISS_KEY = 'pwa_banner_dismissed_at'
+const DISMISS_WINDOW_MS = 30_000
+
 if (typeof window !== 'undefined') {
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault()
@@ -17,16 +24,31 @@ if (typeof window !== 'undefined') {
     })
 }
 
+function getDismissedAt(): number | null {
+    if (typeof window === 'undefined') return null
+    const raw = sessionStorage.getItem(DISMISS_KEY)
+    if (!raw) return null
+    const dismissedAt = Number(raw)
+    return Number.isNaN(dismissedAt) ? null : dismissedAt
+}
+
+function isWithinDismissWindow(): boolean {
+    const dismissedAt = getDismissedAt()
+    if (dismissedAt === null) return false
+    return Date.now() - dismissedAt < DISMISS_WINDOW_MS
+}
+
 export function useInstallPrompt() {
     const [prompt, setPrompt] = useState<BeforeInstallPromptEvent | null>(globalDeferredPrompt)
     const [isInstalled, setIsInstalled] = useState(false)
-    const [isDismissed, setIsDismissed] = useState<boolean>(() => {
-        if (typeof window === 'undefined') return false
-        return localStorage.getItem('pwa_banner_dismissed') === 'true'
-    })
+    const [isDismissed, setIsDismissed] = useState<boolean>(() => isWithinDismissWindow())
+    const [isPrompting, setIsPrompting] = useState(false)
 
     useEffect(() => {
-        // Check if running as PWA / Standalone mode
+        // Check if running as PWA / Standalone mode. This is the ONLY thing
+        // that permanently suppresses the banner - once the app is actually
+        // installed, the browser reports display-mode: standalone, so there's
+        // nothing to remember in storage to know not to show it again.
         const checkStandalone = () => {
             const isStandaloneMode =
                 window.matchMedia('(display-mode: standalone)').matches ||
@@ -60,7 +82,7 @@ export function useInstallPrompt() {
             setIsInstalled(true)
             globalDeferredPrompt = null
             setPrompt(null)
-            localStorage.removeItem('pwa_banner_dismissed')
+            sessionStorage.removeItem(DISMISS_KEY)
         }
 
         // Media query listener for real-time display mode changes
@@ -87,42 +109,71 @@ export function useInstallPrompt() {
         }
     }, [prompt])
 
-    const install = async (): Promise<boolean> => {
+    // While dismissed, count down to the end of the 30s window and flip
+    // isDismissed back to false so the banner re-shows on its own - the
+    // user doesn't need to reload or navigate for it to reappear.
+    useEffect(() => {
+        if (!isDismissed) return
+
+        const dismissedAt = getDismissedAt()
+        const remaining = dismissedAt === null ? 0 : DISMISS_WINDOW_MS - (Date.now() - dismissedAt)
+
+        if (remaining <= 0) {
+            setIsDismissed(false)
+            return
+        }
+
+        const t = setTimeout(() => setIsDismissed(false), remaining)
+        return () => clearTimeout(t)
+    }, [isDismissed])
+
+    const install = useCallback(async (): Promise<boolean> => {
         const activePrompt = prompt || globalDeferredPrompt
 
-        if (!activePrompt) {
+        if (!activePrompt || isPrompting) {
             console.warn('PWA: Install prompt triggered, but no deferred prompt was captured.')
             return false
         }
 
+        setIsPrompting(true)
         try {
             await activePrompt.prompt()
             const { outcome } = await activePrompt.userChoice
 
+            // A BeforeInstallPromptEvent can only ever be triggered ONCE - Chrome
+            // invalidates it right after prompt() resolves, whether the user
+            // accepted or dismissed it. Clearing it unconditionally here (not
+            // just on "accepted") stops "Install" from silently failing the
+            // second time it's tapped.
+            globalDeferredPrompt = null
+            setPrompt(null)
+
             if (outcome === 'accepted') {
-                globalDeferredPrompt = null
-                setPrompt(null)
                 setIsInstalled(true)
                 return true
             }
             return false
         } catch (error) {
             console.error('PWA: Error during prompt execution:', error)
+            globalDeferredPrompt = null
+            setPrompt(null)
             return false
+        } finally {
+            setIsPrompting(false)
         }
-    }
+    }, [prompt, isPrompting])
 
-    const dismiss = () => {
-        localStorage.setItem('pwa_banner_dismissed', 'true')
+    const dismiss = useCallback(() => {
+        sessionStorage.setItem(DISMISS_KEY, String(Date.now()))
         setIsDismissed(true)
-        setPrompt(null)
-    }
+    }, [])
 
     const canInstall = Boolean(prompt || globalDeferredPrompt) && !isInstalled && !isDismissed
 
     return {
         canInstall,
         isInstalled,
+        isPrompting,
         install,
         dismiss,
     }
