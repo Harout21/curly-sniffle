@@ -1,12 +1,11 @@
-// src/components/InstallBanner.jsx
 import { useInstallPrompt } from '@/hooks/useInstallPrompt'
 
 export function InstallBanner() {
     const { canInstall, install, dismiss } = useInstallPrompt()
 
-    const isMobile = typeof window !== 'undefined' && /android|iphone|ipad|ipod/i.test(navigator.userAgent)
-
-    if (!isMobile) return null
+    // 1. If Chrome has not fired the event yet (or it was dismissed/installed), hide the banner.
+    // As soon as the custom hook catches the event, this component will re-render and canInstall becomes true.
+    if (!canInstall) return null
 
     return (
         <div className="fixed bottom-6 left-4 right-4 z-[9999] flex items-center justify-between

@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 
+// Catch event globally before React even mounts
 let globalDeferredPrompt = null
 
-// Capture the event at the earliest possible moment
 if (typeof window !== 'undefined') {
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault()
         globalDeferredPrompt = e
-        // Dispatch a custom event so active hooks catch it even if mounted late
-        window.dispatchEvent(new Event('pwa-prompt-available'))
+        window.dispatchEvent(new Event('pwa-deferred-prompt-ready'))
     })
 }
 
@@ -21,18 +20,16 @@ export function useInstallPrompt() {
     })
 
     useEffect(() => {
-        // 1. Check if app is already running as standalone PWA
         const isStandalone =
             window.matchMedia('(display-mode: standalone)').matches ||
-            window.navigator.standalone === true // Fallback for iOS Safari
+            window.navigator.standalone === true
 
         if (isStandalone) {
             setIsInstalled(true)
             return
         }
 
-        // 2. Sync global prompt state on mount
-        if (globalDeferredPrompt) {
+        if (globalDeferredPrompt && !prompt) {
             setPrompt(globalDeferredPrompt)
         }
 
@@ -42,7 +39,7 @@ export function useInstallPrompt() {
             setPrompt(e)
         }
 
-        const handlePromptAvailable = () => {
+        const handlePromptReady = () => {
             if (globalDeferredPrompt) {
                 setPrompt(globalDeferredPrompt)
             }
@@ -56,23 +53,20 @@ export function useInstallPrompt() {
         }
 
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-        window.addEventListener('pwa-prompt-available', handlePromptAvailable)
+        window.addEventListener('pwa-deferred-prompt-ready', handlePromptReady)
         window.addEventListener('appinstalled', handleAppInstalled)
 
         return () => {
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-            window.removeEventListener('pwa-prompt-available', handlePromptAvailable)
+            window.removeEventListener('pwa-deferred-prompt-ready', handlePromptReady)
             window.removeEventListener('appinstalled', handleAppInstalled)
         }
-    }, []) // Empty dependency array prevents re-render loops
+    }, [])
 
     const install = async () => {
         const activePrompt = prompt || globalDeferredPrompt
 
-        if (!activePrompt) {
-            console.warn('PWA: No active install prompt event found.')
-            return false
-        }
+        if (!activePrompt) return false
 
         try {
             await activePrompt.prompt()
@@ -85,7 +79,7 @@ export function useInstallPrompt() {
             }
             return outcome === 'accepted'
         } catch (error) {
-            console.error('PWA: Error triggering install prompt:', error)
+            console.error('PWA: Install error:', error)
             return false
         }
     }

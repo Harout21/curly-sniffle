@@ -11,25 +11,21 @@ import { grandexStones } from './src/data/grandexData';
 
 const languages = ['hy', 'en', 'ru'];
 
-// 1. Category landing pages
 const stoneCategoryRoutes = languages.flatMap((lang) => [
   `/${lang}/stones/corian`,
   `/${lang}/stones/grandex`,
 ]);
 
-// 2. Corian detail pages
 const corianRoutes = (corianStones || []).flatMap((stone: any) => {
   const stoneId = stone.id || stone.slug;
   return languages.map((lang) => `/${lang}/stones/corian/${stoneId}`);
 });
 
-// 3. Grandex detail pages
 const grandexRoutes = (grandexStones || []).flatMap((stone: any) => {
   const stoneId = stone.id || stone.slug;
   return languages.map((lang) => `/${lang}/stones/grandex/${stoneId}`);
 });
 
-// 4. Project detail pages
 const projectRoutes = Array.from({ length: 50 }, (_, i) => i + 1).flatMap((id) =>
     languages.map((lang) => `/${lang}/projects/${id}`)
 );
@@ -41,16 +37,9 @@ export default defineConfig({
     sitemap({
       hostname: 'https://bestproject.am',
       dynamicRoutes: [
-        '/',
-        '/hy',
-        '/en',
-        '/ru',
-        '/hy/projects',
-        '/en/projects',
-        '/ru/projects',
-        '/hy/stones',
-        '/en/stones',
-        '/ru/stones',
+        '/', '/hy', '/en', '/ru',
+        '/hy/projects', '/en/projects', '/ru/projects',
+        '/hy/stones', '/en/stones', '/ru/stones',
         ...stoneCategoryRoutes,
         ...corianRoutes,
         ...grandexRoutes,
@@ -73,46 +62,52 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         lang: 'hy',
+        // Critical Fix: Explicit separation of "any" and "maskable" for Android compatibility
         icons: [
           {
             src: '/pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
-            purpose: 'any',
+            purpose: 'any'
+          },
+          {
+            src: '/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'maskable'
           },
           {
             src: '/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any',
+            purpose: 'any'
           },
           {
             src: '/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'maskable',
-          },
+            purpose: 'maskable'
+          }
         ],
       },
       devOptions: {
-        enabled: false, // Enables Service Worker during `npm run dev`
+        enabled: false, // Set to true ONLY if you want to test PWA in `npm run dev`
         type: 'module',
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,json}'],
         globIgnores: ['sitemap.xml', 'robots.txt'],
-        navigateFallback: '/index.html',
+        navigateFallback: '/index.html', // Critical Fix: Fallback for /hy/, /en/ routes
         navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/],
         runtimeCaching: [
           {
-            // Cache translation files for multi-language support offline
             urlPattern: /\/locales\/.*\.json$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'i18n-translations',
               expiration: {
                 maxEntries: 30,
-                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+                maxAgeSeconds: 30 * 24 * 60 * 60,
               },
             },
           },
